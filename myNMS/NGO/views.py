@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
-from django.contrib import messages
+from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
@@ -111,4 +111,18 @@ def aple(request):
         if 'submitted' in request.GET:
             submitted=True
     return render(request,'addpledge.html',{'form':form})
+
+def pledgeh(request, pledge_id):
+    # Pledge=pledge.objects.get(pk=pledge_id)
+    pass
+def delstu(request):
+    pass
+def editest(request):
+    pass
+def vstats(request):
+    pass
+def pref(request):
+    pass
+def minventory(request):
+    pass
 
