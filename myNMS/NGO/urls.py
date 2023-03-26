@@ -5,6 +5,8 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('adminlogin',views.adminlogin,name='login_admin'),
     path('donorlogin',views.donorlogin,name='login_donor'),
+    path('donorRegistration',views.donorRegistration,name='register_donor'),
+    path('logout',views.logout,name='logout'),
     # path('viewDonor',views.donorview,name='viewDonor'),
     # path('pledgehist',views.pledge,'pledgehist'),#2
     # path('addstudent',views.addstu,'addstudent'),#1
