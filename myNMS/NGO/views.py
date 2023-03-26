@@ -73,3 +73,16 @@ def aple(request):
         if 'submitted' in request.GET:
             submitted=True
     return render(request,'addpledge.html',{'form':form})
+def pledgeh(request, pledge_id):
+    # Pledge=pledge.objects.get(pk=pledge_id)
+    return
+def delstu(request):
+    return
+def editest(request):
+    return
+def vstats(request):
+    return
+def pref(request):
+    return
+def minventory(request):
+    return
