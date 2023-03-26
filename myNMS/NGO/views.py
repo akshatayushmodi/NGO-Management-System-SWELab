@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
-from .models import pledge
+from .models import pledge,student
 
 
 # Create your views here.
@@ -75,20 +75,23 @@ def logout(request):
 def donorview(request):
     donors_list=User.objects.all()
     return render(request,'donorsview.html',{'donor_list':donors_list})
+
+
 def addstu(request):
-    submitted=False
-    form=studentform
-    if request.method == "POST":
-        form=studentform(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/addstu?submittted=True')
-        else:
-            form=studentform
-            if 'submitted' in request.GET:
-                submitted=True
-    
-    return render(request,'addstudent.html',{'form':form})
+    new_student = student()
+    if request.method == 'POST':
+        new_student.fullname=request.POST['fullname']
+        new_student.sclass=request.POST['sclass']
+        new_student.familyincome=request.POST['familyincome']
+        new_student.moneyneeded=request.POST['moneyneeded']
+        new_student.books=request.POST['books']
+        new_student.uniform=request.POST['uniform']
+        new_student.performance=request.POST['performance']
+        new_student.gender=request.POST['gender']
+
+        new_student.save()
+        return redirect('/adminpage.html')    
+    return render(request,'addstudent.html')
 
 def aple(request):
     submitted=False
