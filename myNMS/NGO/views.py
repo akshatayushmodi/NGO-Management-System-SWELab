@@ -49,16 +49,16 @@ def donorRegistration(request):
         if password1==password2:
             if User.objects.filter(username = username).exists():
                 messages.info(request,'Username Taken')
-                return redirect(reverse('register_donor'))
+                return redirect('/donorRegistration')
             else:
-                user = User.objects.create_user(first_name=first_name,last_name=last_name,email_id = email_id,phone_number=phone_number,username=username,password=password1)
+                user = User.objects.create_user(first_name=first_name,last_name=last_name,email = email_id,username=username,password=password1)
                 user.save()
                 messages.info(request,'User created')
                 return redirect('/')
 
         else:
             messages.info(request,'Password does not match')
-            return redirect(reverse('register_donor'))
+            return redirect('/donorRegistration')
     
     else:
         return render(request,'register_donor.html')
