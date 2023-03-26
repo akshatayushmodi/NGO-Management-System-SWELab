@@ -62,3 +62,7 @@ def donorRegistration(request):
     
     else:
         return render(request,'register_donor.html')
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
