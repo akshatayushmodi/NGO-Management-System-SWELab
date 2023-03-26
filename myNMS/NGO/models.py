@@ -8,14 +8,14 @@ from django.contrib.auth.models import User
 #     email_id=models.EmailField('emailid',null=True)
 #     address=models.TextField('addressname',null=True)
 #     phone=models.BigIntegerField("mobileno",null=True)
-    
-class Pledge(models.Model):
+
+class pledge(models.Model):
     money=models.PositiveBigIntegerField("paisa",null=True)
-    donor=models.ForeignKey(User,null=True,on_delete=models.CASCADE)
-    status=models.BooleanField(null=True)
     #frequency
     books=models.PositiveSmallIntegerField(null=True)
     uniform=models.PositiveSmallIntegerField(null=True)#stores class
+    donor=models.ForeignKey(User,null=True,on_delete=models.CASCADE)
+    status=models.BooleanField(null=True)
 
 class student(models.Model):
     fullname=models.CharField(max_length=240,null=True)
