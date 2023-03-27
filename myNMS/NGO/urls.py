@@ -11,7 +11,7 @@ urlpatterns = [
     path('aple',views.aple,name='addpledge'),#1
     path('addstudent',views.addstu,name='add_student'),
     path('viewDonor',views.donorview,name='viewDonor'),
-    path('pledgehist',views.pledgeh,'pledgehist'),
+    path('pledgehist',views.pledgeh,name='pledgehist'),
     path('deletestudent',views.delstu,name='deletestudent'),
     path('editesttbl',views.editest,name='editesttbl'),
     path('viewworking',views.vstats,name='viewworking'),
