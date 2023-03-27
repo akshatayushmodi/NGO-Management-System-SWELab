@@ -8,7 +8,17 @@ from django.contrib.auth.models import User
 #     email_id=models.EmailField('emailid',null=True)
 #     address=models.TextField('addressname',null=True)
 #     phone=models.BigIntegerField("mobileno",null=True)
-
+class actual_money(models.Model):
+    money=models.BigIntegerField(null=True)
+class inventory(models.Model):
+    sclass=models.SmallIntegerField(null=True)
+    books=models.IntegerField(null=True)
+    uniform=models.IntegerField(null=True)
+    
+class estimations(models.Model):
+    sclass=models.SmallIntegerField(null=True)
+    books=models.PositiveIntegerField(null=True)
+    uniform=models.PositiveIntegerField(null=True)
 class pledge(models.Model):
     money=models.PositiveBigIntegerField("paisa",null=True)
     #frequency
