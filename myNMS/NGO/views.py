@@ -98,7 +98,7 @@ def aple(request):
     if request.method == "POST":
         form=pledgeform(request.POST)
         if form.is_valid():
-            pledgeobj=pledge#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            pledgeobj=pledge()#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             pledgeobj.money=form['money']
             pledgeobj.books=form['books']
             pledgeobj.uniform=form['uniform']

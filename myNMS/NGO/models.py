@@ -10,10 +10,10 @@ from django.contrib.auth.models import User
 #     phone=models.BigIntegerField("mobileno",null=True)
 
 class pledge(models.Model):
-    money=models.PositiveBigIntegerField("paisa",null=True)
+    money=models.IntegerField("Money",null=True)
     #frequency
-    books=models.PositiveSmallIntegerField(null=True)
-    uniform=models.PositiveSmallIntegerField(null=True)#stores class
+    books=models.IntegerField(null=True)
+    uniform=models.IntegerField(null=True)#stores class
     donor=models.ForeignKey(User,null=True,on_delete=models.CASCADE)
     status=models.BooleanField(null=True)
 
