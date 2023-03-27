@@ -112,3 +112,17 @@ def aple(request):
             submitted=True
     return render(request,'addpledge.html',{'form':form})
 
+def pledgeh(request, pledge_id):
+    # Pledge=pledge.objects.get(pk=pledge_id)
+    pass
+def delstu(request):
+    pass
+def editest(request):
+    pass
+def vstats(request):
+    pass
+def pref(request):
+    pass
+def minventory(request):
+    pass
+
