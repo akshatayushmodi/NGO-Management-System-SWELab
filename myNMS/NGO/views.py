@@ -78,32 +78,34 @@ def donorview(request):
 
 
 def addstu(request):
-    new_student = student()
-    if request.method == 'POST':
-        new_student.fullname=request.POST['fullname']
-        new_student.sclass=request.POST['sclass']
-        new_student.familyincome=request.POST['familyincome']
-        new_student.moneyneeded=request.POST['moneyneeded']
-        new_student.books=request.POST['books']
-        new_student.uniform=request.POST['uniform']
-        new_student.performance=request.POST['performance']
-        new_student.gender=request.POST['gender']
-
-        new_student.save()
-        return redirect('/adminpage.html')    
-    return render(request,'addstudent.html')
+    if ((request.user.is_authenticated) & (request.user.is_staff)):
+        if request.method == 'POST':
+            new_student = student()
+            new_student.fullname=request.POST['fullname']
+            new_student.sclass=request.POST['sclass']
+            new_student.familyincome=request.POST['familyincome']
+            new_student.moneyneeded=request.POST['moneyneeded']
+            if "books" in request.POST:
+                new_student.books=request.POST['books']
+            if "uniform" in request.POST:
+                new_student.uniform=request.POST['uniform']
+            new_student.performance=request.POST['performance']
+            new_student.gender=request.POST['gender']
+            new_student.save()
+            return render(request,'adminpage.html')    
+        return render(request,'addstudent.html')
 
 def aple(request):
     submitted=False
     if request.method == "POST":
         form=pledgeform(request.POST)
         if form.is_valid():
-            pledgeobj=pledge()#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            pledgeobj.money=form['money']
-            pledgeobj.books=form['books']
-            pledgeobj.uniform=form['uniform']
-            pledgeobj.donor=request.user
-            pledgeobj.status=False
+            pledgeobj=pledge.objects.create(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=request.user,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # pledgeobj.money=form['money']
+            # pledgeobj.books=form['books']
+            # pledgeobj.uniform=form['uniform']
+            # pledgeobj.donor=request.user
+            # pledgeobj.status=False
             pledgeobj.save()
             return HttpResponseRedirect('/aple?submittted=True')
     else:
