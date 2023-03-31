@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
+from .models import Donor 
 
 # Create your views here.
 def home(request):
@@ -22,12 +23,13 @@ def adminlogin(request):
     else:
         return render(request,'login_admin.html',{})
 def donorlogin(request):
+    donor = Donor()
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        user=authenticate(username=username,password=password)
-        if user is not None:
-            login(request,user)
+        donor.user=authenticate(username=username,password=password)
+        if donor.user is not None:
+            login(request,donor.user)
             return render(request,'donorpage.html',{})
             messages.success(request,"successfully logged in")
         else:
@@ -36,6 +38,7 @@ def donorlogin(request):
         return render(request,'login_donor.html',{})
 
 def donorRegistration(request):
+    donor = Donor()
     if request.method == 'POST':
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
@@ -51,8 +54,9 @@ def donorRegistration(request):
                 messages.info(request,'Username Taken')
                 return redirect('/donorRegistration')
             else:
-                user = User.objects.create_user(first_name=first_name,last_name=last_name,email = email_id,username=username,password=password1)
+                donor.user = User.objects.create_user(first_name=first_name,last_name=last_name,email = email_id,username=username,password=password1)
                 user.save()
+                donor.save()
                 messages.info(request,'User created')
                 return redirect('/')
 
