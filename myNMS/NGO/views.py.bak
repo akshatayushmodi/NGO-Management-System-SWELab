@@ -1,12 +1,17 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
+<<<<<<< HEAD
+from django.contrib import messages
+from django.contrib.auth.models import User
+from .models import Donor 
+=======
 from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
-from .models import Pledge,student,Donor
+from .models import pledge,student
 
-
+>>>>>>> Ishan
 
 # Create your views here.
 def home(request):
@@ -60,7 +65,7 @@ def donorRegistration(request):
                 return redirect('/donorRegistration')
             else:
                 donor.user = User.objects.create_user(first_name=first_name,last_name=last_name,email = email_id,username=username,password=password1)
-                donor.user.save()
+                user.save()
                 donor.save()
                 messages.info(request,'User created')
                 return redirect('/')
@@ -77,7 +82,7 @@ def logout(request):
     return redirect('/')
 
 def donorview(request):
-    donors_list=Donor.objects.all()
+    donors_list=User.objects.all()
     return render(request,'donorsview.html',{'donor_list':donors_list})
 
 
@@ -102,7 +107,7 @@ def aple(request):
     if request.method == "POST":
         form=pledgeform(request.POST)
         if form.is_valid():
-            pledgeobj=Pledge()#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            pledgeobj=pledge()#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             pledgeobj.money=form['money']
             pledgeobj.books=form['books']
             pledgeobj.uniform=form['uniform']
