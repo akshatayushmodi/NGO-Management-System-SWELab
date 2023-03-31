@@ -1,1 +1,22 @@
-<h1>donors view</h1>
+{% extends 'base.html' %}
+
+{% block title %}DonorsView{% endblock title %}
+{% block body %}
+<h1 class="h3 mb-3 fw-normal">DONORS</h1>
+
+<table class="table table-bordered border-secondary table-striped-columns table-primary">
+    <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Name</th>
+          <th scope="col">Username</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+{% for pledge in pledgelist%}
+<tr><td>{{pledge.money}}</td> <td><a href="{% url 'show-donor' pledge.donor.id%}">{{pledge.donor.first_name}}</a> </td><td> {{pledge.donor}}</td><td> <a href="{% url 'click-paid' pledge.id%}">{{pledge.status}}</a></td><br></tr>
+{% endfor %}
+      </tbody>
+</table>
+{% endblock body %}
