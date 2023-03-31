@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Admin_page{% endblock title %}
+{% block body %}
+
+<body>
+    <form action="addstudent" method="post">
+        {% csrf_token %}
+        <input type="text" name="fullname" placeholder="Full Name"><br>
+        <input type="number" name="sclass" placeholder="Standard"><br>
+        <input type="number" name="familyincome" placeholder="Family Income(Annual)"><br>
+        <input type="number" name="moneyneeded" placeholder="Money Needed"><br>
+        <input type="checkbox" name="books" placeholder="Books"><br>
+        <input type="checkbox" name="uniform" placeholder="Uniform"><br>
+        <input type="number" name="performance" placeholder="Performance(in previous class)"><br>
+        <input type="text" name="gender" placeholder="Gender"><br>
+        <input type="Submit">
+        
+    </form>
+    {% endblock body %}

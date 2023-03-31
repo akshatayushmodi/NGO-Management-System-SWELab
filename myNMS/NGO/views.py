@@ -1,8 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
-from django.contrib import messages
+
+from django.contrib import messages,auth
 from django.contrib.auth.models import User
-from .models import Donor 
+from .forms import studentform,pledgeform
+from django.http import HttpResponseRedirect
+from .models import pledge,student,Donor
+
+
 
 # Create your views here.
 def home(request):
@@ -19,7 +24,7 @@ def adminlogin(request):
                 return render(request,'adminpage.html',{})
                 messages.success(request,"successfully logged in")
             else:
-                return redirect('/adminlogin')
+                return redirect('adminlogin')
     else:
         return render(request,'login_admin.html',{})
 def donorlogin(request):
@@ -36,6 +41,7 @@ def donorlogin(request):
             return redirect('/donorlogin')
     else:
         return render(request,'login_donor.html',{})
+
 
 def donorRegistration(request):
     donor = Donor()
@@ -70,3 +76,58 @@ def donorRegistration(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+def donorview(request):
+    donors_list=User.objects.all()
+    return render(request,'donorsview.html',{'donor_list':donors_list})
+
+
+def addstu(request):
+    new_student = student()
+    if request.method == 'POST':
+        new_student.fullname=request.POST['fullname']
+        new_student.sclass=request.POST['sclass']
+        new_student.familyincome=request.POST['familyincome']
+        new_student.moneyneeded=request.POST['moneyneeded']
+        new_student.books=request.POST['books']
+        new_student.uniform=request.POST['uniform']
+        new_student.performance=request.POST['performance']
+        new_student.gender=request.POST['gender']
+
+        new_student.save()
+        return redirect('/adminpage.html')    
+    return render(request,'addstudent.html')
+
+def aple(request):
+    submitted=False
+    if request.method == "POST":
+        form=pledgeform(request.POST)
+        if form.is_valid():
+            pledgeobj=pledge()#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            pledgeobj.money=form['money']
+            pledgeobj.books=form['books']
+            pledgeobj.uniform=form['uniform']
+            pledgeobj.donor=request.user
+            pledgeobj.status=False
+            pledgeobj.save()
+            return HttpResponseRedirect('/aple?submittted=True')
+    else:
+        form=pledgeform
+        if 'submitted' in request.GET:
+            submitted=True
+    return render(request,'addpledge.html',{'form':form})
+
+def pledgeh(request, pledge_id):
+    # Pledge=pledge.objects.get(pk=pledge_id)
+    pass
+def delstu(request):
+    pass
+def editest(request):
+    pass
+def vstats(request):
+    pass
+def pref(request):
+    pass
+def minventory(request):
+    pass
+

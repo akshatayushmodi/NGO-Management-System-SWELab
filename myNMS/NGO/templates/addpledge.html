@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Pledge{% endblock title %}
+{% block body %}
+<div class='container'>
+    <form action="\aple" method="post">
+        {% csrf_token %}
+    
+        <div class="mb-3">
+            <label for="Money" class="form-label">Money</label>
+            <input type="Number" class="form-control" id="money" name="money" placeholder="Money">
+          </div>
+       
+        <div class="mb-3">
+            <label for="Books" class="form-label">Books</label>
+            <input type="Number" class="form-control" id="books" name="books" placeholder="No. of books">
+          </div>
+      
+        <div class="mb-3">
+            <label for="Uniform" class="form-label">Uniform</label>
+            <input type="Number" class="form-control" id="uniform" name="uniform" placeholder="No. of Uniform">
+          </div>
+        <button type="submit">Submit</button>
+        <!--<input type="Submit">-->
+    </form>
+</div>
+{% endblock body %}
