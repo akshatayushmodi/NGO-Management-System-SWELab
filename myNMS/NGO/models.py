@@ -33,7 +33,7 @@ class Donor(models.Model):
     
 class pledge(models.Model):
     money=models.PositiveBigIntegerField("paisa",null=True)
-    donor=models.ForeignKey(User,null=True,on_delete=models.CASCADE)
+    donor=models.ForeignKey(Donor,null=True,on_delete=models.CASCADE)
     status=models.BooleanField(null=True)
     #frequency
     books=models.PositiveSmallIntegerField(null=True)

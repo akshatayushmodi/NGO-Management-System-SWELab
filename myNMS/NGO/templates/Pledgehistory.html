@@ -2,5 +2,5 @@
 
 
 {% for pledge in pledgelist%}
-    {{pledge.money}} <a href="{% url 'show-donor' pledge.donor.id%}">{{pledge.donor.first_name}}</a>  {{pledge.donor}} <a href="{% url 'click-paid' pledge.id%}">{{pledge.status}}</a><br>
+    {{pledge.money}} <a href="{% url 'show-donor' pledge.donor.id%}">{{pledge.donor.user.first_name}}</a>   <a href="{% url 'click-paid' pledge.id%}">{{pledge.status}}</a><br>
 {% endfor %}

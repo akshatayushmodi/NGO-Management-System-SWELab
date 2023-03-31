@@ -17,8 +17,8 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        if username=="Akshat":
-            if password=="Akshat7":
+        if username=="Aks":
+            if password=="Aks7":
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     login(request,user)
@@ -106,7 +106,8 @@ def aple(request):
     if request.method == "POST":
         form=pledgeform(request.POST)
         if form.is_valid():
-            pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=request.user,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            dnr=Donor.objects.filter(user=request.user).first()
+            pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=dnr,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             # pledgeobj.money=form['money']
             # pledgeobj.books=form['books']
             # pledgeobj.uniform=form['uniform']
@@ -126,7 +127,7 @@ def pledgeh(request):
     return render(request,'Pledgehistory.html',{'pledgelist':Pledge_list})
 
 def viewdonor(request,donor_id):
-    donor = User.objects.get(pk=donor_id)
+    donor = Donor.objects.get(pk=donor_id)
     return render(request,'donorview.html',{'donor':donor})
 def clickp(request, pledge_id):
     Pledge = pledge.objects.get(pk=pledge_id)

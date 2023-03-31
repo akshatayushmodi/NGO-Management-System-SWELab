@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import student,Pledge
+from .models import student,pledge
 
 #create a student form 
 class studentform(ModelForm):
@@ -11,7 +11,7 @@ class studentform(ModelForm):
         #widgets
 class pledgeform(ModelForm):
     class Meta:
-        model=Pledge
+        model=pledge
         fields=('money','books','uniform')
         
         #widgets
