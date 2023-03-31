@@ -17,6 +17,8 @@ urlpatterns = [
     path('viewworking',views.vstats,name='viewworking'),
     path('viewpref',views.pref,name='viewpref'),
     path('maintaininv',views.minventory,name='maintaininv'),
+    path('showdonor/<donor_id>',views.viewdonor,name='show-donor'),
+    path('clickpaid/<pledge_id>',views.clickp,name='click-paid'),
 ]
     
 

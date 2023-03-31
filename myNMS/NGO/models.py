@@ -9,6 +9,10 @@ from django.contrib.auth.models import User
 #     address=models.TextField('addressname',null=True)
 #     phone=models.BigIntegerField("mobileno",null=True)
 
+class totalmoney(models.Model):
+    Sum=models.IntegerField("money",null=True)
+    
+    
 class pledge(models.Model):
     money=models.IntegerField("Money",null=True)
     #frequency

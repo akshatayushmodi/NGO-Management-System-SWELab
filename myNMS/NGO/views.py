@@ -4,7 +4,7 @@ from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
-from .models import pledge,student
+from .models import pledge,student,totalmoney
 
 
 # Create your views here.
@@ -100,7 +100,7 @@ def aple(request):
     if request.method == "POST":
         form=pledgeform(request.POST)
         if form.is_valid():
-            pledgeobj=pledge.objects.create(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=request.user,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=request.user,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             # pledgeobj.money=form['money']
             # pledgeobj.books=form['books']
             # pledgeobj.uniform=form['uniform']
@@ -114,9 +114,36 @@ def aple(request):
             submitted=True
     return render(request,'addpledge.html',{'form':form})
 
-def pledgeh(request, pledge_id):
-    # Pledge=pledge.objects.get(pk=pledge_id)
-    pass
+def pledgeh(request):
+    Pledge_list=pledge.objects.all()
+    
+    return render(request,'Pledgehistory.html',{'pledgelist':Pledge_list})
+
+def viewdonor(request,donor_id):
+    donor = User.objects.get(pk=donor_id)
+    return render(request,'donorview.html',{'donor':donor})
+def clickp(request, pledge_id):
+    Pledge = pledge.objects.get(pk=pledge_id)
+    if Pledge.status==False:
+        Pledge.status=True
+        money=int(totalmoney.objects.all().count())
+        if money>0:
+            print(money)
+            print("111")
+            funds=totalmoney.objects.get(pk=1)
+            funds.Sum=int(Pledge.money)+int(funds.Sum)
+            funds.save()
+        else:
+            print("222")
+            funds=totalmoney(Sum=int(Pledge.money))
+            funds.save()
+    else:
+        Pledge.status=False
+    Pledge.save()
+    return render(request,'adminpage.html')
+    
+    
+    
 def delstu(request):
     pass
 def editest(request):
