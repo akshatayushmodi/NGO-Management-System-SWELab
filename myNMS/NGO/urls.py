@@ -19,6 +19,9 @@ urlpatterns = [
     path('maintaininv',views.minventory,name='maintaininv'),
     path('showdonor/<donor_id>',views.viewdonor,name='show-donor'),
     path('clickpaid/<pledge_id>',views.clickp,name='click-paid'),
+    path('updaterow/<row_id>',views.uro,name='update-row'),
+    path('updateinv/<inv_id>',views.inven,name='update-inv'),
+    
 ]
     
 

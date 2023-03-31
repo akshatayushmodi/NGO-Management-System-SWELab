@@ -1,0 +1,5 @@
+<h1>inventory</h1>
+
+{% for inv in inventorylist%}
+    {{ inv.sclass}}   {{ inv.books}}  {{ inv.uniforms}} <a href={% url 'update-inv' inv.id%}>update</a><br>
+{% endfor %}

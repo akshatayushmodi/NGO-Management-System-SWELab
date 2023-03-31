@@ -1,0 +1,6 @@
+<h1>estimations</h1>
+
+
+{% for estimate in estimationlist%}
+    {{estimate.sclass}}   {{estimate.books}}  {{estimate.uniforms}} <a href={% url 'update-row' estimate.id%}>update</a><br>
+{% endfor %}
