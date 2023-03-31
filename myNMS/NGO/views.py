@@ -4,7 +4,7 @@ from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
-from .models import pledge,student,totalmoney
+from .models import pledge,student,totalmoney,estimations,inventory
 
 
 # Create your views here.
@@ -147,11 +147,30 @@ def clickp(request, pledge_id):
 def delstu(request):
     pass
 def editest(request):
-    pass
+    est_list=estimations.objects.all()
+
+    return render(request,'estimates.html',{'estimationlist':est_list})
+def uro(request,row_id):
+    row=estimations.objects.get(pk=row_id)
+    if request.method == 'POST':
+            row.books=request.POST['book']
+            row.uniforms=request.POST['uniform']
+            row.save()
+    return render(request,'est.html',{'row':row})
+
 def vstats(request):
     pass
 def pref(request):
     pass
 def minventory(request):
-    pass
+    inv=inventory.objects.all()
+    
+    return render(request,'inventoryview.html',{'inventorylist':inv})
+def inven(request,inv_id):
+    inv=inventory.objects.get(pk=inv_id)
+    if request.method=='POST':
+        inv.books=request.POST['book']
+        inv.uniforms=request.POST['uniform']
+        inv.save()
+    return render(request,'inve.html',{'inven':inv})
 

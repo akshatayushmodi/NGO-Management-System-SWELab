@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from django_postgres_extensions.models.fields import ArrayField
 
 # Create your models here.
 # class Donor(models.Model):
@@ -8,6 +9,15 @@ from django.contrib.auth.models import User
 #     email_id=models.EmailField('emailid',null=True)
 #     address=models.TextField('addressname',null=True)
 #     phone=models.BigIntegerField("mobileno",null=True)
+class inventory(models.Model):
+    sclass=models.IntegerField(null=True)
+    books=models.IntegerField(null=True)
+    uniforms=models.IntegerField(null=True)
+    
+class estimations(models.Model):
+    sclass=models.IntegerField(null=True)
+    books=models.IntegerField(null=True)
+    uniforms=models.IntegerField(null=True)
 
 class totalmoney(models.Model):
     Sum=models.IntegerField("money",null=True)
