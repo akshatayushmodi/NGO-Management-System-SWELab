@@ -166,8 +166,35 @@ def uro(request,row_id):
     return render(request,'est.html',{'row':row})
 
 def vstats(request):
-    pass
+    # inv=inventory.objects.all()
+    stu=student.objects.all()
+    money=int(0)
+    books=[0,0,0,0,0,0,0,0]
+    uniforms=[0,0,0,0,0,0,0,0]
+    for stud in stu:
+        money=money+int(stud.moneyneeded)
+        if stud.books:
+            books[stud.sclass]=books[stud.sclass]+1
+        if stud.uniforms:
+            uniforms[stud.sclass]=uniforms[stud.sclass]+1
+    for s in range(1,6,1):
+        inv=inventory.objects.filter(sclass=s).first()
+        if books[s]>0:
+            if books[s]>inv.books:
+                books[s]=books[s]-int(inv.books)
+            else:
+                books[s]=0
+        if uniforms[s]>0:
+            if uniforms[s]>inv.uniforms:
+                uniforms[s]=uniforms[s]-int(inv.uniforms)
+            else:
+                uniforms[s]=0
+        es=estimations.objects.filter(sclass=s).first()
+        money=money+books[s]*int(es.books)+uniforms[s]*int(es.uniforms)
+    return render(request,'workingstats.html',{'money':money})
+
 def pref(request):
+    
     pass
 def minventory(request):
     inv=inventory.objects.all()
