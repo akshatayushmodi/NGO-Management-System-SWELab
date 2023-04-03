@@ -48,3 +48,17 @@ class student(models.Model):
     uniform=models.BooleanField(null=True, default=False)
     performance=models.FloatField(null=True)
     gender=models.CharField(max_length=7,null=True)
+    score=models.FloatField(null=True)
+
+    def __score__(self):
+        income_coeff=0.4
+        income_limit=500000.0
+        gender_flag = 0
+        performance_coeff=0.3
+        gender_coefficient=1-income_coeff-performance_coeff
+        if(self.gender=="Female"):
+            gender_flag=1
+        
+        new_score = income_coeff*(income_limit-self.familyincome)/income_limit+performance_coeff*self.performance/100+gender_coefficient*gender_flag/2
+        self.score = float(new_score)
+    

@@ -3,7 +3,7 @@
 {% block body %}
 
 <body>
-    <form action="{% url 'modify_student' instance.id}" method="post">
+    <form action="{% url 'modify_student' id %}" method="post">
         {% csrf_token %}
         <div class="mb-3">
             <label for="fullname" class="form-label">Full Name</label>
@@ -47,7 +47,7 @@
             <input type="text" class="form-control" id="gender" name="gender" placeholder="Gender" value="{{instance.gender}}">
           </div>
         <!--<input type="text" name="gender" placeholder="Gender"><br>-->
-        <input type="Submit">
+        <button type="submit">Submit</button>
         
     </form>
     {% endblock body %}

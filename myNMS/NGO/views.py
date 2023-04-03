@@ -13,8 +13,8 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        if username=="Aks":
-            if password=="Aks7":
+        if username=="Akshat":
+            if password=="Aks12345":
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     user.is_staff=True
@@ -86,14 +86,15 @@ def addstu(request):
             new_student = student()
             new_student.fullname=request.POST['fullname']
             new_student.sclass=request.POST['sclass']
-            new_student.familyincome=request.POST['familyincome']
+            new_student.familyincome=int(request.POST['familyincome'])
             new_student.moneyneeded=request.POST['moneyneeded']
             if "books" in request.POST:
                 new_student.books=request.POST['books']
             if "uniform" in request.POST:
                 new_student.uniform=request.POST['uniform']
-            new_student.performance=request.POST['performance']
+            new_student.performance=float(request.POST['performance'])
             new_student.gender=request.POST['gender']
+            new_student.__score__()
             new_student.save()
             return render(request,'adminpage.html')    
         return render(request,'addstudent.html')
@@ -209,7 +210,7 @@ def inven(request,inv_id):
 
 
 def studentdetails(request):
-    students = student.objects.values()
+    students = student.objects.order_by('-score').values()
     return render(request,'studentlist.html',{'students':students})
 
 def deletestudent(request,student_id):
@@ -222,15 +223,16 @@ def modifystudent(request,student_id):
     if request.method == 'POST':
             instance.fullname=request.POST['fullname']
             instance.sclass=request.POST['sclass']
-            instance.familyincome=request.POST['familyincome']
+            instance.familyincome=int(request.POST['familyincome'])
             instance.moneyneeded=request.POST['moneyneeded']
             if "books" in request.POST:
                 instance.books=request.POST['books']
             if "uniform" in request.POST:
                 instance.uniform=request.POST['uniform']
-            instance.performance=request.POST['performance']
+            instance.performance=float(request.POST['performance'])
             instance.gender=request.POST['gender']
+            instance.__score__()
             instance.save()
-            return redirect('studentlist.html')
-    return render(request,'modifystudent.html',{'instance':instance})
+            return redirect(studentdetails)
+    return render(request,'modifystudent.html',{'instance':instance,'id':student_id})
     
