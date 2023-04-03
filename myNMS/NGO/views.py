@@ -14,8 +14,8 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        if username=="Akshat":
-            if password=="Aks12345":
+        if username=="Aks":
+            if password=="Aks7":
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     user.is_staff=True
@@ -236,9 +236,15 @@ def updatetexp(request):
     return render(request,'update_expenditure.html')
 
 def exph(request):
-    expend=exphist.objects.all()
-    money=expenditure.objects.get(pk=1)
-    return render(request,'expenditurehist.html',{'hist':expend,'total':money})
+    m=expenditure.objects.all().count()
+    if m>0:
+        expend=exphist.objects.all()
+        money=expenditure.objects.get(pk=1)
+        return render(request,'expenditurehist.html',{'hist':expend,'total':money})
+    else:
+        return render(request,'update_expenditure.html')
+        
+    
     
     
 
