@@ -4,11 +4,7 @@ from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
-
 from .models import pledge,student,totalmoney,estimations,inventory,Donor
-
-
-
 
 # Create your views here.
 def home(request):
@@ -21,9 +17,10 @@ def adminlogin(request):
             if password=="Akshat7":
                 user=authenticate(username=username,password=password)
                 if user is not None:
+                    user.is_staff=True
                     login(request,user)
-                return render(request,'adminpage.html',{})
-                messages.success(request,"successfully logged in")
+                    return render(request,'adminpage.html',{})
+                    messages.success(request,"successfully logged in")
             else:
                 return redirect('adminlogin')
     else:
@@ -88,19 +85,20 @@ def donorview(request):
 
 
 def addstu(request):
-    if ((request.user.is_authenticated) & (request.user.is_staff)):
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
         if request.method == 'POST':
             new_student = student()
             new_student.fullname=request.POST['fullname']
             new_student.sclass=request.POST['sclass']
-            new_student.familyincome=request.POST['familyincome']
+            new_student.familyincome=int(request.POST['familyincome'])
             new_student.moneyneeded=request.POST['moneyneeded']
             if "books" in request.POST:
                 new_student.books=request.POST['books']
             if "uniform" in request.POST:
                 new_student.uniform=request.POST['uniform']
-            new_student.performance=request.POST['performance']
+            new_student.performance=float(request.POST['performance'])
             new_student.gender=request.POST['gender']
+            new_student.__score__()
             new_student.save()
             return render(request,'adminpage.html')    
         return render(request,'addstudent.html')
@@ -213,3 +211,33 @@ def inven(request,inv_id):
         inv.save()
     return render(request,'inve.html',{'inven':inv})
 
+
+
+
+def studentdetails(request):
+    students = student.objects.order_by('-score').values()
+    return render(request,'studentlist.html',{'students':students})
+
+def deletestudent(request,student_id):
+    if request.method=="GET":
+        student.objects.get(id=student_id).delete()
+        return redirect(studentdetails)
+
+def modifystudent(request,student_id):
+    instance = student.objects.get(id=student_id)
+    if request.method == 'POST':
+            instance.fullname=request.POST['fullname']
+            instance.sclass=request.POST['sclass']
+            instance.familyincome=int(request.POST['familyincome'])
+            instance.moneyneeded=request.POST['moneyneeded']
+            if "books" in request.POST:
+                instance.books=request.POST['books']
+            if "uniform" in request.POST:
+                instance.uniform=request.POST['uniform']
+            instance.performance=float(request.POST['performance'])
+            instance.gender=request.POST['gender']
+            instance.__score__()
+            instance.save()
+            return redirect(studentdetails)
+    return render(request,'modifystudent.html',{'instance':instance,'id':student_id})
+    

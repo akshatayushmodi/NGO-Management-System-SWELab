@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Admin_page{% endblock title %}
+{% block body %}
+
+<body>
+    <form action="{% url 'modify_student' id %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="fullname" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full name" value="{{instance.fullname}}">
+          </div>
+        <!--<input type="text" name="fullname" placeholder="Full Name"><br>-->
+        <div class="mb-3">
+            <label for="Standard" class="form-label">Standard</label>
+            <input type="Number" class="form-control" id="sclass" name="sclass" placeholder="Standard" value="{{instance.sclass}}">
+          </div>
+        <!--<input type="number" name="sclass" placeholder="Standard"><br>-->
+        <div class="mb-3">
+            <label for="Family Income" class="form-label">family Income</label>
+            <input type="Number" class="form-control" id="familyincome" name="familyincome" placeholder="Family Income" value="{{instance.familyincome}}">
+          </div>
+        <!--<input type="number" name="familyincome" placeholder="Family Income(Annual)"><br>-->
+        <div class="mb-3">
+            <label for="Money Needed" class="form-label">Money Needed</label>
+            <input type="Number" class="form-control" id="moneyneeded" name="moneyneeded" placeholder="Money Needed" value="{{instance.moneyneeded}}">
+          </div>
+        <!--<input type="number" name="moneyneeded" placeholder="Money Needed"><br>-->
+        <!--<div class="mb-3">
+            <label for="Books" class="form-label">Books</label>
+            <input type="checkbox" class="form-control" id="Books" name="Books" placeholder="Books" value="True">
+          </div>-->
+        <label for="Books" class="form-label">Books</label>
+        <input type="checkbox" name="books" placeholder="Books" value="{{instance.books}}"><br>
+        <!--<div class="mb-3">
+            <label for="Uniform" class="form-label">Uniform</label>
+            <input type="checkbox" class="form-control" id="money" name="money" placeholder="Uniform" value="True">
+          </div>-->
+        <label for="Uniform" class="form-label">Uniform</label>
+        <input type="checkbox" name="uniform" placeholder="Uniform" value="{{instance.uniform}}"><br>
+        <div class="mb-3">
+            <label for="Performance" class="form-label">Performance</label>
+            <input type="Number" class="form-control" id="performance" name="performance" placeholder="Performance" value="{{instance.performance}}">
+          </div>
+        <!--<input type="number" name="performance" placeholder="Performance(in previous class)"><br>-->
+        <div class="mb-3">
+            <label for="Gender" class="form-label">Gender</label>
+            <input type="text" class="form-control" id="gender" name="gender" placeholder="Gender" value="{{instance.gender}}">
+          </div>
+        <!--<input type="text" name="gender" placeholder="Gender"><br>-->
+        <button type="submit">Submit</button>
+        
+    </form>
+    {% endblock body %}
