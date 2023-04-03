@@ -4,7 +4,8 @@ from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
-from .models import pledge,student,totalmoney,estimations,inventory,Donor
+
+from .models import pledge,student,totalmoney,estimations,inventory,Donor,expenditure,exphist
 
 # Create your views here.
 def home(request):
@@ -13,8 +14,8 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        if username=="Akshat":
-            if password=="Akshat7":
+        if username=="Aks":
+            if password=="Aks7":
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     user.is_staff=True
@@ -177,7 +178,7 @@ def vstats(request):
         money=money+int(stud.moneyneeded)
         if stud.books:
             books[stud.sclass]=books[stud.sclass]+1
-        if stud.uniforms:
+        if stud.uniform:
             uniforms[stud.sclass]=uniforms[stud.sclass]+1
     for s in range(1,6,1):
         inv=inventory.objects.filter(sclass=s).first()
@@ -210,6 +211,29 @@ def inven(request,inv_id):
         inv.uniforms=request.POST['uniform']
         inv.save()
     return render(request,'inve.html',{'inven':inv})
+def updatetexp(request):
+    money=expenditure.objects.all().count()
+    if request=='POST':
+        m=request.POST['money']
+        r=request.POST['reason']
+        if money>0:
+            texp=expenditure.objects.get(pk=1)
+            texp.exp=texp.exp+int(m)
+            texp.save()
+        else:
+            texp=expenditure(exp=int(m))
+            texp.save()
+        t=exphist(expe=int(m),rec=r)
+        t.save()
+        return redirect('viewexpenditure')
+    return render(request,'update_expenditure.html')
+
+def exph(request):
+    expend=exphist.objects.all()
+    money=expenditure.objects.get(pk=1)
+    return render(request,'expenditurehist.html',{'hist':expend,'total':money})
+    
+    
 
 
 
