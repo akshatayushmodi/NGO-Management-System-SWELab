@@ -231,7 +231,8 @@ def updatetexp(request):
 def exph(request):
     m=int(expenditure.objects.all().count())
     if m > 0 :
-        money=expenditure.objects.get(pk=1)
+        print("111")
+        # money=expenditure.objects.get(pk=1)
         expend=exphist.objects.all()
         return render(request,'expenditurehist.html',{'hist':expend,'total':money})
     else:
