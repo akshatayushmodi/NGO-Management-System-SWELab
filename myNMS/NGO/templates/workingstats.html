@@ -1,2 +1,19 @@
-<h1>working status</h1>
-{{money}} {{totalmoney.Sum}}
+{% extends 'base.html' %}
+
+{% block title %}Working_status{% endblock title %}
+{% block body %}
+<h1 class="h3 mb-3 fw-normal">Working Status</h1>
+
+<table class="table table-bordered border-secondary table-striped-columns table-primary">
+    <thead>
+        <tr>
+          <th scope="col">Estimate money needed</th>
+          <th scope="col">Net Balance</th>
+  
+        </tr>
+      </thead>
+      <tbody>
+<td>{{money}}</td> <td> {{totalmoney.Sum}}</td>
+</tbody>
+</table>
+{% endblock body %}

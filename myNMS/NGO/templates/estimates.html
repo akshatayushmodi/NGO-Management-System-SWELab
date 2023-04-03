@@ -3,8 +3,23 @@
 {% block title %}Estimates{% endblock title %}
 {% block body %}
 
+<table class="table table-bordered border-secondary table-striped-columns table-primary">
+    <thead>
+        <tr>
+          <th scope="col">Class</th>
+          <th scope="col">Books</th>
+          <th scope="col">Uniforms</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for estimate in estimationlist%}
 
-{% for estimate in estimationlist%}
-    {{estimate.sclass}}   {{estimate.books}}  {{estimate.uniforms}} <a href={% url 'update-row' estimate.id%}>update</a><br>
-{% endfor %}
+        <tr><td>  {{estimate.sclass}}  </td><td> {{estimate.books}} </td><td> {{estimate.uniforms}}</td><td><a href={% url 'update-row' estimate.id%}>update</a></td><br>
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock body %}
+
+

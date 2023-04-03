@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Estimates{% endblock title %}
+{% block body %}
+
+
+{% for expend in hist%}
+    {{expend.expe}}   {{expend.rec}}  
+{% endfor %}
+{{total}} <a href={% url 'aexpend' %}> update </a>
+{% endblock body %}
+
