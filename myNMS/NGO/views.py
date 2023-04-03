@@ -191,7 +191,8 @@ def vstats(request):
                 uniforms[s]=0
         es=estimations.objects.filter(sclass=s).first()
         money=money+books[s]*int(es.books)+uniforms[s]*int(es.uniforms)
-    return render(request,'workingstats.html',{'money':money})
+    funds=totalmoney.objects.get(pk=1)
+    return render(request,'workingstats.html',{'money':money,'totalmoney':funds})
 
 def pref(request):
     
