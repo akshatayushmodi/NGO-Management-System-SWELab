@@ -23,7 +23,12 @@ class estimations(models.Model):
 class totalmoney(models.Model):
     Sum=models.IntegerField("money",null=True)
     
+class expenditure(models.Model):
+    exp=models.IntegerField(null=True)
     
+class exphist(models.Model):
+    expe=models.IntegerField(null=True)
+    rec=models.CharField(max_length=801,null=True)
 
 
 class Donor(models.Model):
