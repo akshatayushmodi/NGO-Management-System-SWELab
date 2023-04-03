@@ -1,12 +1,100 @@
-{% extends 'base.html' %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>NGO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+  <style>
+    body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+    .w3-row-padding img {margin-bottom: 12px}
+    .bgimg {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-image: url('https://source.unsplash.com/random/1920x500/?education,books');
+      min-height: 100%;
+    }
+    </style>
+    </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-{% block title %}Home{% endblock title %}
-{% block body %}
-<div class="container-fluid my-2">
-    <img src="https://source.unsplash.com/random/1920x500/?education,books" class="d-block w-100" alt="...">
-    <h3>Register</h3>
-</div>
-<div class='container'>
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">NGO</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/donorRegistration">Register</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Login
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/adminlogin">Admin</a></li>
+                  <li><a class="dropdown-item" href="/donorlogin">Donor</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact Us</a>
+                  </li>
+              
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+
+<!-- Sidebar with image -->
+<nav class="w3-sidebar w3-hide-medium w3-hide-small" style="width:40%">
+  <div class="bgimg"></div>
+</nav>
+
+<!-- Hidden Sidebar (reveals when clicked on menu icon)-->
+<nav class="w3-sidebar w3-black w3-animate-right w3-xxlarge" style="display:none;padding-top:150px;right:0;z-index:2" id="mySidebar">
+  <a href="javascript:void(0)" onclick="closeNav()" class="w3-button w3-black w3-xxxlarge w3-display-topright" style="padding:0 12px;">
+    <i class="fa fa-remove"></i>
+  </a>
+  <div class="w3-bar-block w3-center">
+    <a href="#" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Home</a>
+    <a href="#portfolio" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Our Targets</a>
+    <a href="#about" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">About us</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-text-grey w3-hover-black" onclick="closeNav()">Contact Us</a>
+  </div>
+</nav>
+ 
+
+<!-- Page Content -->
+<div class="w3-main w3-padding-large" style="margin-left:40%">
+
+  <!-- Menu icon to open sidebar -->
+  <span class="w3-button w3-top w3-white w3-xxlarge w3-text-grey w3-hover-text-black" style="width:auto;right:0;" onclick="openNav()"><i class="fa fa-bars"></i></span>
+
+  <!-- Header -->
+  <header class="w3-container w3-center" style="padding:128px 16px" id="home">
+    <h1 class="w3-jumbo"><b>REGISTER</b></h1>
+    <p>as a DONOR</p>
+    <img src="https://source.unsplash.com/random/1920x500/?education,books" class="w3-image w3-hide-large w3-hide-small w3-round" style="display:block;width:60%;margin:auto;">
+    <img src="https://source.unsplash.com/random/1920x500/?education,books" class="w3-image w3-hide-large w3-hide-medium w3-round" width="1000" height="1333">
+  </header>
+
+
+  <div class='container'>
     <form action="{% url 'register_donor' %}" method="post">
         {% csrf_token %}
         <div class="mb-3">
@@ -24,16 +112,21 @@
             <input type="text" class="form-control" id="email_id" name="email_id" placeholder="Email ID">
           </div>
         <!--<input type="text" name="email_id" placeholder="Email ID"><br>-->
-        <div class="mb-3">
-            <label for="Phone Number" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number">
-          </div>
+        
         <!--<input type="text" name="phone_number" placeholder="Phone Number"><br>-->
         <div class="mb-3">
             <label for="username" class="form-label">username</label>
             <input type="text" class="form-control" id="username" name="username" placeholder="Username">
           </div>
         <!--<input type="text" name="username" placeholder="Username"><br>-->
+        <div class="mb-3">
+          <label for="Address" class="form-label">Address</label>
+          <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+        </div>
+        <div class="mb-3">
+          <label for="Number" class="form-label">Phone Number</label>
+          <input type="phone_number" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number">
+        </div>
         <div class="mb-3">
             <label for="Password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password1" name="password1" placeholder="Password">
@@ -48,6 +141,129 @@
         <!--<input type="Submit">-->
     </form>
 </div>
+  <!-- Portfolio Section -->
+  <div class="w3-padding-32 w3-content" id="portfolio">
+    <h2 class="w3-text-grey">OUR TARGET</h2>
+    <hr class="w3-opacity">
+
+    <!-- Grid for photos -->
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-half">
+        <img src="https://source.unsplash.com/random/500x500/?boy,girl" style="width:100%">
+        <img src="https://source.unsplash.com/random/500x500/?boy,girl" style="width:100%">
+      </div>
+
+      <div class="w3-half">
+        <img src="https://source.unsplash.com/random/500x500/?boy,girl" style="width:100%">
+        <img src="https://source.unsplash.com/random/500x500/?boy,girl" style="width:100%">
+      </div>
+    <!-- End photo grid -->
+    </div>
+  <!-- End Portfolio Section -->
+  </div>
+
+  <!-- About Section -->
+  <div class="w3-content w3-justify w3-text-grey w3-padding-32" id="about">
+    <h2>About Us</h2>
+    <hr class="w3-opacity">
+    <p>NGO stands for non-governmental organization. While there is no universally agreed-upon definition of an NGO, typically it is a voluntary group or institution with a social mission, which operates independently from the government.
+
+      NGOs or similar organizations exist in all parts of the world. What is considered an NGO in one country may not qualify as an NGO in another, as legal definitions, permitted activities, monitoring, and oversight differ from country to country. The term can encompass many types of organizations.
+    </p>
+    <h3 class="w3-padding-16">ACHIEVEMENTS</h3>
+    <p class="w3-wide">ESTIMATES</p>
+    <div class="w3-light-grey">
+      <div class="w3-container w3-center w3-padding-small w3-dark-grey" style="width:95%">95%</div>
+    </div>
+    <p class="w3-wide">CHILDREN HELPED</p>
+    <div class="w3-light-grey">
+      <div class="w3-container w3-center w3-padding-small w3-dark-grey" style="width:85%">85%</div>
+    </div>
+    <p class="w3-wide">BOOKS AND UNIFORMS GIVEN</p>
+    <div class="w3-light-grey">
+      <div class="w3-container w3-center w3-padding-small w3-dark-grey" style="width:80%">80%</div>
+    </div><br>
+
+    <div class="w3-row w3-center w3-dark-grey w3-padding-16 w3-section">
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">14+</span><br>
+        Partners
+      </div>
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">55+</span><br>
+        Projects Done
+      </div>
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">1000+</span><br>
+        Children Helped
+      </div>
+      <div class="w3-quarter w3-section">
+        <span class="w3-xlarge">150+</span><br>
+        Meetings
+      </div>
+    </div>
+
+    
+  <!-- End About Section -->
+  </div>
+
+  <!-- Contact Section -->
+  <div class="w3-padding-32 w3-content w3-text-grey" id="contact" style="margin-bottom:64px">
+    <h2>Contact Me</h2>
+    <hr class="w3-opacity">
+
+    <div class="w3-section">
+      <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i>IIT KGP, Kharagput, West Bengal</p>
+      <p><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: 8341605275</p>
+      <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: ishanray1234@gmail.com</p>
+    </div>
+    
+    <!-- Image of location/map -->
+    <img src="https://source.unsplash.com/random/1000x500/?kharagpur,IIT Kharagpur" class="w3-image w3-greyscale" style="width:100%;margin:32px 0">
+   
+    <p>Lets get in touch. Send me a message:</p>
+    <form action="/action_page.php" target="_blank">
+      <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Name" required name="Name"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Email" required name="Email"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Subject" required name="Subject"></p>
+      <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Message" required name="Message"></p>
+      <p>
+        <button class="w3-button w3-light-grey w3-padding-large" type="submit">
+          <i class="fa fa-paper-plane"></i> SEND MESSAGE
+        </button>
+      </p>
+    </form>
+  <!-- End Contact Section -->
+  </div>  
+  
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-64 w3-light-grey w3-center w3-opacity w3-xlarge" style="margin:-24px">
+    <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+
+  <!-- End footer -->
+  </footer>
+  
+<!-- END PAGE CONTENT -->
+</div>
+
+<script>
+// Open and close sidebar
+function openNav() {
+  document.getElementById("mySidebar").style.width = "60%";
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+</script>
+
+
 
     <div>
         {% for message in messages %}
@@ -55,4 +271,7 @@
         {% endfor %}
 
     </div>
-    {% endblock body %}
+
+
+  </body>
+  </html>

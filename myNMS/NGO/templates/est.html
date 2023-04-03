@@ -1,1 +1,18 @@
-<h1>edit a row</h1>
+{% extends 'base.html' %}
+
+{% block title %}Estimates{% endblock title %}
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="No. of Books" class="form-label">Books</label>
+        <input type="Number" class="form-control" id="book" name="book" placeholder={{row.books}}>
+      </div>
+      <div class="mb-3">
+        <label for="No. of Unifrom" class="form-label">Uniform</label>
+        <input type="Number" class="form-control" id="uniform" name="uniform" placeholder={{row.uniforms}}>
+      </div>
+      <button type="submit">Submit</button>
+
+</form>
+{% endblock body %}

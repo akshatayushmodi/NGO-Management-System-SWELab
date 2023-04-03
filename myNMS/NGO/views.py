@@ -17,8 +17,8 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        if username=="Aks":
-            if password=="Aks7":
+        if username=="Akshat":
+            if password=="Akshat7":
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     login(request,user)
@@ -52,6 +52,7 @@ def donorRegistration(request):
         email_id = request.POST['email_id']
         phone_number = request.POST['phone_number']
         username = request.POST['username']
+        address = request.POST['address']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         
@@ -63,7 +64,10 @@ def donorRegistration(request):
             else:
                 donor.user = User.objects.create_user(first_name=first_name,last_name=last_name,email = email_id,username=username,password=password1)
                 donor.user.save()
+                donor.address=address
+                donor.phone=phone_number
                 donor.save()
+
                 messages.info(request,'User created')
                 return redirect('/')
 

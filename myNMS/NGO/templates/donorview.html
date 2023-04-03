@@ -1,2 +1,21 @@
-<h1>donor view</h1>
-{{donor}}
+{% extends 'base.html' %}
+
+{% block title %}PledgeHistory{% endblock title %}
+{% block body %}
+<h1 class="h3 mb-3 fw-normal">DONOR INFORMATION</h1>
+
+<table class="table table-bordered border-secondary table-striped-columns table-primary">
+    <thead>
+        <tr>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Email ID</th>
+        </tr>
+      </thead>
+      <tbody>
+<td>{{donor.user.first_name}}</td> <td>{{donor.user.last_name}}</td><td> {{donor.address}} </td><td>{{donor.phone}}</td><td> {{donor.email_id}}</td>
+</tbody>
+</table>
+{% endblock body %}

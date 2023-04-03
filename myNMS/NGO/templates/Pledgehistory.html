@@ -15,7 +15,7 @@
       </thead>
       <tbody>
 {% for pledge in pledgelist%}
-<tr><td>{{pledge.money}}</td> <td><a href="{% url 'show-donor' pledge.donor.id%}">{{pledge.donor.first_name}}</a> </td><td> {{pledge.donor}}</td><td> <a href="{% url 'click-paid' pledge.id%}">{{pledge.status}}</a></td><br></tr>
+<tr><td>{{pledge.money}}</td> <td><a href="{% url 'show-donor' pledge.donor.id%}">{{pledge.donor.user.first_name}}</a> </td><td> {{pledge.donor.user.username}}</td><td> <a href="{% url 'click-paid' pledge.id%}">{{pledge.status}}</a></td><br></tr>
 {% endfor %}
       </tbody>
 </table>

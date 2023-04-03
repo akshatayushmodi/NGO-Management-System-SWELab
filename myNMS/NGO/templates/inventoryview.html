@@ -1,5 +1,22 @@
-<h1>inventory</h1>
+{% extends 'base.html' %}
 
-{% for inv in inventorylist%}
-    {{ inv.sclass}}   {{ inv.books}}  {{ inv.uniforms}} <a href={% url 'update-inv' inv.id%}>update</a><br>
+{% block title %}InventoryView{% endblock title %}
+{% block body %}
+
+<table class="table table-bordered border-secondary table-striped-columns table-primary">
+    <thead>
+        <tr>
+          <th scope="col">Class</th>
+          <th scope="col">Books</th>
+          <th scope="col">Uniforms</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inv in inventorylist%}
+        <tr><td>   {{ inv.sclass}} </td><td>  {{ inv.books}} </td><td> {{ inv.uniforms}} </td><td><a href={% url 'update-inv' inv.id%}>update</a></td><br>
+
 {% endfor %}
+      </tbody>
+</table>
+{% endblock body %}
