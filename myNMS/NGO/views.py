@@ -214,21 +214,23 @@ def inven(request,inv_id):
     return render(request,'inve.html',{'inven':inv})
 def updatetexp(request):
     money=expenditure.objects.all().count()
-    if request=='POST':
-        m=request.POST['money']
+    if request.method=='POST':
+        m=int(request.POST['money'])
         r=request.POST['reason']
         tam=totalmoney.objects.get(pk=1)
-        if tam>m:
-            tam=tam-int(m)
+        if tam.Sum> m:
+            tam.Sum=tam.Sum-int(m)
             tam.save()
         else:
             messages.info(request,'not enough money with NGO')
             redirect('viewexpenditure')
         if money>0:
+            print("222")
             texp=expenditure.objects.get(pk=1)
             texp.exp=texp.exp+int(m)
             texp.save()
         else:
+            print("111")
             texp=expenditure(exp=int(m))
             texp.save()
         t=exphist(expe=int(m),rec=r)
