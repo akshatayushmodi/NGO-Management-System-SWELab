@@ -14,8 +14,8 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        if username=="Aks":
-            if password=="Aks7":
+        if username=="Admin":
+            if password=="User@111":
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     user.is_staff=True
@@ -23,17 +23,19 @@ def adminlogin(request):
                     return render(request,'adminpage.html',{})
                     messages.success(request,"successfully logged in")
             else:
-                return redirect('adminlogin')
+                return redirect('login_admin')
     else:
+        if (request.user.is_authenticated and request.user.is_staff):
+            return render(request,'adminpage.html',{})
         return render(request,'login_admin.html',{})
 def donorlogin(request):
-    donor = Donor()
+    
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        donor.user=authenticate(username=username,password=password)
-        if donor.user is not None:
-            login(request,donor.user)
+        user=authenticate(username=username,password=password)
+        if user is not None:
+            login(request,user)
             return render(request,'donorpage.html',{})
             messages.success(request,"successfully logged in")
         else:
@@ -125,31 +127,31 @@ def aple(request):
     return render(request,'addpledge.html',{'form':form})
 
 def pledgeh(request):
-    Pledge_list=pledge.objects.all()
+    pledge_list=pledge.objects.all()
     
-    return render(request,'Pledgehistory.html',{'pledgelist':Pledge_list})
+    return render(request,'Pledgehistory.html',{'pledgelist':pledge_list})
 
 def viewdonor(request,donor_id):
     donor = Donor.objects.get(pk=donor_id)
     return render(request,'donorview.html',{'donor':donor})
 def clickp(request, pledge_id):
-    Pledge = pledge.objects.get(pk=pledge_id)
-    if Pledge.status==False:
-        Pledge.status=True
+    pledgeobj = pledge.objects.get(pk=pledge_id)
+    if pledgeobj.status==False:
+        pledgeobj.status=True
         money=int(totalmoney.objects.all().count())
         if money>0:
             print(money)
             print("111")
             funds=totalmoney.objects.get(pk=1)
-            funds.Sum=int(Pledge.money)+int(funds.Sum)
+            funds.Sum=int(pledgeobj.money)+int(funds.Sum)
             funds.save()
         else:
             print("222")
-            funds=totalmoney(Sum=int(Pledge.money))
+            funds=totalmoney(Sum=int(pledgeobj.money))
             funds.save()
     else:
-        Pledge.status=False
-    Pledge.save()
+        pledgeobj.status=False
+    pledgeobj.save()
     return render(request,'adminpage.html')
     
     
@@ -234,10 +236,6 @@ def exph(request):
     return render(request,'expenditurehist.html',{'hist':expend,'total':money})
     
     
-
-
-
-
 def studentdetails(request):
     students = student.objects.order_by('-score').values()
     return render(request,'studentlist.html',{'students':students})
