@@ -3,9 +3,16 @@
 {% block title %}Admin_page{% endblock title %}
 {% block body %}
 <div class="container-fluid my-2">
+    {% if messages %}
+    {%for message in messages%}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {%endfor%}
+    {% endif %}
     <img src="https://source.unsplash.com/random/1920x500/?donate,humanity" class="d-block w-100" alt="...">
 </div>
-
 
 
 

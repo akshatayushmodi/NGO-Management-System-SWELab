@@ -4,8 +4,9 @@ from django.contrib import messages,auth
 from django.contrib.auth.models import User
 from .forms import studentform,pledgeform
 from django.http import HttpResponseRedirect
+from datetime import datetime
 
-from .models import pledge,student,totalmoney,estimations,inventory,Donor,expenditure,exphist
+from .models import pledge,student,totalmoney,estimations,inventory,Donor,expenditure,exphist,Admin
 
 # Create your views here.
 def home(request):
@@ -15,17 +16,22 @@ def adminlogin(request):
         username=str(request.POST['username'])
         password=str(request.POST['password'])
 
-        if username=="Admin":
-            if password=="User@111":
-
+        us=Admin.objects.get(id=1)
+        if username==us.username:
+            if password==us.password:
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     user.is_staff=True
                     login(request,user)
-                    return render(request,'adminpage.html',{})
                     messages.success(request,"successfully logged in")
+                    return render(request,'adminpage.html',{})                
             else:
-                return redirect('login_admin')
+                messages.success(request,"Please enter correct password")
+                return redirect('/adminlogin')
+        else:
+            messages.success(request,"Please enter correct username")
+            return redirect('/adminlogin')
+
     else:
         if (request.user.is_authenticated and request.user.is_staff):
             return render(request,'adminpage.html',{})
@@ -35,13 +41,15 @@ def donorlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        user=authenticate(username=username,password=password)
-        if user is not None:
-            login(request,user)
+        donor.user=authenticate(username=username,password=password)
+        if donor.user is not None:
+            login(request,donor.user)
+            messages.success(request,"Welcome, you are successfully logged in!!")
+
             return render(request,'donorpage.html',{})
-            messages.success(request,"successfully logged in")
         else:
-            return redirect('/donorlogin')
+            messages.success(request,"Please enter correct username or password ")
+            return redirect('donorlogin')
     else:
         return render(request,'login_donor.html',{})
 
@@ -61,7 +69,7 @@ def donorRegistration(request):
         
         if password1==password2:
             if User.objects.filter(username = username).exists():
-                messages.info(request,'Username Taken')
+                messages.info(request,'Username Already Taken')
                 return redirect('/donorRegistration')
             else:
                 donor.user = User.objects.create_user(first_name=first_name,last_name=last_name,email = email_id,username=username,password=password1)
@@ -105,148 +113,169 @@ def addstu(request):
             new_student.gender=request.POST['gender']
             new_student.__score__()
             new_student.save()
+            messages.info(request,"Student added!")
             return render(request,'adminpage.html')    
         return render(request,'addstudent.html')
 
 def aple(request):
-    submitted=False
-    if request.method == "POST":
-        form=pledgeform(request.POST)
-        if form.is_valid():
-            dnr=Donor.objects.filter(user=request.user).first()
-            pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=dnr,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            # pledgeobj.money=form['money']
-            # pledgeobj.books=form['books']
-            # pledgeobj.uniform=form['uniform']
-            # pledgeobj.donor=request.user
-            # pledgeobj.status=False
-            pledgeobj.save()
-            return HttpResponseRedirect('/aple?submittted=True')
-    else:
-        form=pledgeform
-        if 'submitted' in request.GET:
-            submitted=True
-    return render(request,'addpledge.html',{'form':form})
+    if (request.user.is_authenticated):
+        submitted=False
+        if request.method == "POST":
+            form=pledgeform(request.POST)
+            if form.is_valid():
+                dnr=Donor.objects.filter(user=request.user).first()
+                pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=dnr,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                # pledgeobj.money=form['money']
+                # pledgeobj.books=form['books']
+                # pledgeobj.uniform=form['uniform']
+                # pledgeobj.donor=request.user
+                # pledgeobj.status=False
+                pledgeobj.save()
+                messages.info(request,"Pledged!")
+                return HttpResponseRedirect('/aple?submittted=True')
+        else:
+            form=pledgeform
+            if 'submitted' in request.GET:
+                submitted=True
+        return render(request,'addpledge.html',{'form':form})
 
 def pledgeh(request):
-    pledge_list=pledge.objects.all()
-    
-    return render(request,'Pledgehistory.html',{'pledgelist':pledge_list})
+
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        Pledge_list=pledge.objects.all()
+        
+        return render(request,'Pledgehistory.html',{'pledgelist':Pledge_list})
 
 def viewdonor(request,donor_id):
     donor = Donor.objects.get(pk=donor_id)
     return render(request,'donorview.html',{'donor':donor})
 def clickp(request, pledge_id):
-    pledgeobj = pledge.objects.get(pk=pledge_id)
-    if pledgeobj.status==False:
-        pledgeobj.status=True
-        money=int(totalmoney.objects.all().count())
-        if money>0:
-            print(money)
-            print("111")
-            funds=totalmoney.objects.get(pk=1)
-            funds.Sum=int(pledgeobj.money)+int(funds.Sum)
-            funds.save()
+
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        Pledge = pledge.objects.get(pk=pledge_id)
+        if Pledge.status==False:
+            Pledge.status=True
+            money=int(totalmoney.objects.all().count())
+            if money>0:
+                print(money)
+                print("111")
+                funds=totalmoney.objects.get(pk=1)
+                funds.Sum=int(Pledge.money)+int(funds.Sum)
+                funds.save()
+            else:
+                print("222")
+                funds=totalmoney(Sum=int(Pledge.money))
+                funds.save()
         else:
-            print("222")
-            funds=totalmoney(Sum=int(pledgeobj.money))
-            funds.save()
-    else:
-        pledgeobj.status=False
-    pledgeobj.save()
-    return render(request,'adminpage.html')
+            Pledge.status=False
+        Pledge.save()
+        return render(request,'adminpage.html')
+
     
     
     
 def delstu(request):
     pass
 def editest(request):
-    est_list=estimations.objects.all()
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        est_list=estimations.objects.all()
 
-    return render(request,'estimates.html',{'estimationlist':est_list})
+        return render(request,'estimates.html',{'estimationlist':est_list})
 def changeestimate(request,row_id):
-    row=estimations.objects.get(pk=row_id)
-    if request.method == 'POST':
-            row.books=request.POST['book']
-            row.uniforms=request.POST['uniform']
-            row.save()
-    return render(request,'est.html',{'row':row})
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        row=estimations.objects.get(pk=row_id)
+        if request.method == 'POST':
+                row.books=request.POST['book']
+                row.uniforms=request.POST['uniform']
+                row.save()
+        return render(request,'est.html',{'row':row})
 
 def vstats(request):
     # inv=inventory.objects.all()
-    stu=student.objects.all()
-    money=int(0)
-    books=[0,0,0,0,0,0,0,0]
-    uniforms=[0,0,0,0,0,0,0,0]
-    for stud in stu:
-        money=money+int(stud.moneyneeded)
-        if stud.books:
-            books[stud.sclass]=books[stud.sclass]+1
-        if stud.uniform:
-            uniforms[stud.sclass]=uniforms[stud.sclass]+1
-    for s in range(1,6,1):
-        inv=inventory.objects.filter(sclass=s).first()
-        if books[s]>0:
-            if books[s]>inv.books:
-                books[s]=books[s]-int(inv.books)
-            else:
-                books[s]=0
-        if uniforms[s]>0:
-            if uniforms[s]>inv.uniforms:
-                uniforms[s]=uniforms[s]-int(inv.uniforms)
-            else:
-                uniforms[s]=0
-        es=estimations.objects.filter(sclass=s).first()
-        money=money+books[s]*int(es.books)+uniforms[s]*int(es.uniforms)
-    funds=totalmoney.objects.get(pk=1)
-    return render(request,'workingstats.html',{'money':money,'totalmoney':funds})
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        stu=student.objects.all()
+        money=int(0)
+        books=[0,0,0,0,0,0,0,0]
+        uniforms=[0,0,0,0,0,0,0,0]
+        for stud in stu:
+            money=money+int(stud.moneyneeded)
+            if stud.books:
+                books[stud.sclass]=books[stud.sclass]+1
+            if stud.uniform:
+                uniforms[stud.sclass]=uniforms[stud.sclass]+1
+        for s in range(1,6,1):
+            inv=inventory.objects.filter(sclass=s).first()
+            if books[s]>0:
+                if books[s]>inv.books:
+                    books[s]=books[s]-int(inv.books)
+                else:
+                    books[s]=0
+            if uniforms[s]>0:
+                if uniforms[s]>inv.uniforms:
+                    uniforms[s]=uniforms[s]-int(inv.uniforms)
+                else:
+                    uniforms[s]=0
+            es=estimations.objects.filter(sclass=s).first()
+            money=money+books[s]*int(es.books)+uniforms[s]*int(es.uniforms)
+        funds=totalmoney.objects.get(pk=1)
+        if funds.Sum >= money:
+            messages.info(request,"Congrats!! we have enough funds")
+        else:
+            messages.info(request,"Caution not enough funds!! short by"+ str(money-funds.Sum)+" Rupees" )
+        return render(request,'workingstats.html',{'money':money,'totalmoney':funds})
 
 def pref(request):
     
     pass
 def minventory(request):
-    inv=inventory.objects.all()
-    
-    return render(request,'inventoryview.html',{'inventorylist':inv})
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        inv=inventory.objects.all()
+        
+        return render(request,'inventoryview.html',{'inventorylist':inv})
 def inven(request,inv_id):
-    inv=inventory.objects.get(pk=inv_id)
-    if request.method=='POST':
-        inv.books=request.POST['book']
-        inv.uniforms=request.POST['uniform']
-        inv.save()
-    return render(request,'inve.html',{'inven':inv})
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        inv=inventory.objects.get(pk=inv_id)
+        if request.method=='POST':
+            inv.books=request.POST['book']
+            inv.uniforms=request.POST['uniform']
+            inv.save()
+        return render(request,'inve.html',{'inven':inv})
 def updatetexp(request):
-    money=expenditure.objects.all().count()
-    if request=='POST':
-        m=request.POST['money']
-        r=request.POST['reason']
-        tam=totalmoney.objects.get(pk=1)
-        if tam>m:
-            tam=tam-int(m)
-            tam.save()
-        else:
-            messages.info(request,'not enough money with NGO')
-            redirect('viewexpenditure')
-        if money>0:
-            texp=expenditure.objects.get(pk=1)
-            texp.exp=texp.exp+int(m)
-            texp.save()
-        else:
-            texp=expenditure(exp=int(m))
-            texp.save()
-        t=exphist(expe=int(m),rec=r)
-        t.save()
-        return redirect('viewexpenditure')
-    return render(request,'update_expenditure.html')
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        money=expenditure.objects.all().count()
+        if request.method=='POST':
+            m=int(request.POST['money'])
+            r=request.POST['reason']
+            tam=totalmoney.objects.get(pk=1)
+            if tam.Sum> m:
+                tam.Sum=tam.Sum-int(m)
+                tam.save()
+            else:
+                messages.info(request,'not enough money with NGO')
+                redirect('/addexpend')
+            if money>0:
+                print("222")
+                texp=expenditure.objects.get(pk=1)
+                texp.exp=texp.exp+int(m)
+                texp.save()
+            else:
+                print("111")
+                texp=expenditure(exp=int(m))
+                texp.save()
+            t=exphist(expe=int(m),rec=r)
+            t.save()
+            return redirect('/viewexpenditure')
+        return render(request,'update_expenditure.html')
 
 def exph(request):
-    m=expenditure.objects.all().count()
-    if m>0:
-        expend=exphist.objects.all()
-        money=expenditure.objects.get(pk=1)
-        return render(request,'expenditurehist.html',{'hist':expend,'total':money})
-    else:
-        return render(request,'update_expenditure.html')
+    if ((request.user.is_authenticated) and (request.user.is_staff)):
+        m=expenditure.objects.all().count()
+        if m>0:
+            expend=exphist.objects.all()
+            money=expenditure.objects.get(pk=1)
+            return render(request,'expenditurehist.html',{'hist':expend,'total':money})
+        else:
+            return render(request,'update_expenditure.html')
         
     
     

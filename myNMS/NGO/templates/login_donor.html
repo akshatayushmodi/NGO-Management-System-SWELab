@@ -59,6 +59,14 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
     <div class="w3-container w3-red">
       <h2><i class="fa fa-bed w3-margin-right"></i>DONOR LOGIN</h2>
     </div>
+    {% if messages %}
+   {%for message in messages%}
+   <div class="alert alert-success alert-dismissible fade show" role="alert">
+       {{message}}
+       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+     </div>
+   {%endfor%}
+   {% endif %}
     <div class="w3-container w3-white w3-padding-16">
       <form action="/donorlogin" method='post'>
         {% csrf_token %}
