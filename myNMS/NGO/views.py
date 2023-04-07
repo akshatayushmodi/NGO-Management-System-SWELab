@@ -14,8 +14,10 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
+
         if username=="Admin":
             if password=="User@111":
+
                 user=authenticate(username=username,password=password)
                 if user is not None:
                     user.is_staff=True
@@ -162,7 +164,7 @@ def editest(request):
     est_list=estimations.objects.all()
 
     return render(request,'estimates.html',{'estimationlist':est_list})
-def uro(request,row_id):
+def changeestimate(request,row_id):
     row=estimations.objects.get(pk=row_id)
     if request.method == 'POST':
             row.books=request.POST['book']
@@ -218,6 +220,13 @@ def updatetexp(request):
     if request=='POST':
         m=request.POST['money']
         r=request.POST['reason']
+        tam=totalmoney.objects.get(pk=1)
+        if tam>m:
+            tam=tam-int(m)
+            tam.save()
+        else:
+            messages.info(request,'not enough money with NGO')
+            redirect('viewexpenditure')
         if money>0:
             texp=expenditure.objects.get(pk=1)
             texp.exp=texp.exp+int(m)
@@ -231,9 +240,15 @@ def updatetexp(request):
     return render(request,'update_expenditure.html')
 
 def exph(request):
-    expend=exphist.objects.all()
-    money=expenditure.objects.get(pk=1)
-    return render(request,'expenditurehist.html',{'hist':expend,'total':money})
+    m=expenditure.objects.all().count()
+    if m>0:
+        expend=exphist.objects.all()
+        money=expenditure.objects.get(pk=1)
+        return render(request,'expenditurehist.html',{'hist':expend,'total':money})
+    else:
+        return render(request,'update_expenditure.html')
+        
+    
     
     
 def studentdetails(request):
