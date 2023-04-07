@@ -14,7 +14,10 @@ class inventory(models.Model):
     sclass=models.IntegerField(null=True)
     books=models.IntegerField(null=True)
     uniforms=models.IntegerField(null=True)
-    
+
+class Admin(models.Model):
+    username=models.CharField(max_length=120,null=True)
+    password=models.CharField(max_length=120,null=True)
 class estimations(models.Model):
     sclass=models.IntegerField(null=True)
     books=models.IntegerField(null=True)

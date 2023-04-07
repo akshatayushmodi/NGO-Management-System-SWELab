@@ -3,7 +3,14 @@
 {% block title %}Working_status{% endblock title %}
 {% block body %}
 <h1 class="h3 mb-3 fw-normal">Working Status</h1>
-
+{% if messages %}
+{%for message in messages%}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{message}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{%endfor%}
+{% endif %}
 <table class="table table-bordered border-secondary table-striped-columns table-primary">
     <thead>
         <tr>
