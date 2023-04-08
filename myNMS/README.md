@@ -1,0 +1,1 @@
+To perform automatic testing , open a terminal window in this directory and type "python manage.py test NGO"
