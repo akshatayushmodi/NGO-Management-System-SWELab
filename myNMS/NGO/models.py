@@ -64,6 +64,6 @@ class student(models.Model):
         if(self.gender=="Female"):
             gender_flag=1
         
-        new_score = income_coeff*(income_limit-self.familyincome)/income_limit+performance_coeff*self.performance/100+gender_coefficient*gender_flag/2
+        new_score = income_coeff*(income_limit-int(self.familyincome))/income_limit+performance_coeff*float(self.performance)/100+gender_coefficient*gender_flag/2
         self.score = float(new_score)
     
