@@ -38,7 +38,7 @@ def adminlogin(request):
             return render(request,'adminpage.html',{})
         return render(request,'login_admin.html',{})
 def donorlogin(request):
-    
+    donor= Donor()
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
@@ -255,8 +255,9 @@ def updatetexp(request):
                 tam.Sum=tam.Sum-int(m)
                 tam.save()
             else:
+                print("333")
                 messages.info(request,'not enough money with NGO')
-                redirect('/addexpend')
+                return redirect('/addexpend')
             if money>0:
                 print("222")
                 texp=expenditure.objects.get(pk=1)

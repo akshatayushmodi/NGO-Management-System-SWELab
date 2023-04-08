@@ -10,12 +10,13 @@
           <th scope="col">Money</th>
           <th scope="col">Name</th>
           <th scope="col">Username</th>
+          <th scope="col">Periodicity</th>
           <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
 {% for pledge in pledgelist%}
-<tr><td>{{pledge.money}}</td> <td><a href="{% url 'show-donor' pledge.donor.id%}">{{pledge.donor.user.first_name}}</a> </td><td> {{pledge.donor.user.username}}</td><td> <a href="{% url 'click-paid' pledge.id%}">{{pledge.status}}</a></td><br></tr>
+<tr><td>{{pledge.money}}</td> <td><a href="{% url 'show-donor' pledge.donor.id%}">{{pledge.donor.user.first_name}}</a> </td><td> {{pledge.donor.user.username}}</td><td> {{pledge.donor.user.username}}</td><td> <a href="{% url 'click-paid' pledge.id%}">{{pledge.status}}</a></td><br></tr>
 {% endfor %}
       </tbody>
 </table>

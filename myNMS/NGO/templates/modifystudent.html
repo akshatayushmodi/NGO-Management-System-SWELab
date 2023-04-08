@@ -3,6 +3,8 @@
 {% block body %}
 
 <body>
+
+  
     <form action="{% url 'modify_student' id %}" method="post">
         {% csrf_token %}
         <div class="mb-3">
@@ -51,3 +53,51 @@
         
     </form>
     {% endblock body %}
+
+    <div class='container'>
+      <form action="{% url 'register_donor' %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+              <label for="name" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name">
+            </div>
+          <!--<input type="text" name="first_name" placeholder="First Name"><br>-->
+          <div class="mb-3">
+              <label for="last name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name">
+            </div>
+          <!--<input type="text" name="last_name" placeholder="Last Name"><br>-->
+          <div class="mb-3">
+              <label for="Email ID" class="form-label">Email ID</label>
+              <input type="text" class="form-control" id="email_id" name="email_id" placeholder="Email ID">
+            </div>
+          <!--<input type="text" name="email_id" placeholder="Email ID"><br>-->
+          
+          <!--<input type="text" name="phone_number" placeholder="Phone Number"><br>-->
+          <div class="mb-3">
+              <label for="username" class="form-label">username</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+            </div>
+          <!--<input type="text" name="username" placeholder="Username"><br>-->
+          <div class="mb-3">
+            <label for="Address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+          </div>
+          <div class="mb-3">
+            <label for="Number" class="form-label">Phone Number</label>
+            <input type="phone_number" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number">
+          </div>
+          <div class="mb-3">
+              <label for="Password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password1" name="password1" placeholder="Password">
+            </div>
+          <!--<input type="password" name="password1" placeholder="Password"><br>-->
+          <div class="mb-3">
+              <label for="Password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm Password">
+            </div>
+          <!--<input type="password" name="password2" placeholder="Confirm Password"><br>-->
+          <button type="submit">Submit</button>
+          <!--<input type="Submit">-->
+      </form>
+  </div>

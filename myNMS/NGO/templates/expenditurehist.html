@@ -1,12 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Estimates{% endblock title %}
+{% block title %}Estimates History{% endblock title %}
 {% block body %}
 
+<table class="table table-bordered border-secondary table-striped-columns table-primary">
+    <thead>
+        <tr>
+          <th scope="col">Expenditure Amount</th>
+          <th scope="col">Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for expend in hist%}
 
-{% for expend in hist%}
-    {{expend.expe}}   {{expend.rec}}  
-{% endfor %}
-{{total}} <a href={% url 'aexpend' %}> update </a>
+        <tr><td>  {{expend.expe}}  </td><td> {{expend.rec}}  </td><br>
+        {% endfor %}
+                   
+        </tbody>
+        <tr><td>Total = {{total.exp}}</td><td><a href={% url 'aexpend' %}>update</a></td></tr>
+    </table>
 {% endblock body %}
-
