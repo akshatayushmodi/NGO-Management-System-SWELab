@@ -144,7 +144,23 @@ def pledgeh(request):
         Semiannually=pledge.objects.filter(frequency="Semiannually")
         Annually=pledge.objects.filter(frequency="Annually")
         for spledge in Semiannually:
-            tyet=datetime.now()-spledge.time
+            tyet=(datetime.now().month - spledge.time.month) + 12*(datetime.now().year-spledge.time.year)
+            tpyet=(spledge.lastpaid.month - spledge.time.month) + 12*(spledge.lastpaid.year-spledge.time.year)
+            months=int(tyet)
+            month=int(tpyet)
+            mon=(months%12)
+            monp=(month%12)
+            if (mon>6 & monp<=6) | (mon<=6 & monp>6):
+                spledge.status=False
+        for spledge in Annually:
+            tyet=(datetime.now().month - spledge.time.month) + 12*(datetime.now().year-spledge.time.year)
+            tpyet=(spledge.lastpaid.month - spledge.time.month) + 12*(spledge.lastpaid.year-spledge.time.year)
+            months=int(tyet)
+            month=int(tpyet)
+            mon=(months%24)
+            monp=(month%24)
+            if (mon>12 & monp<=12) | (mon<=12 & monp>12):
+                spledge.status=False
             
         Pledge_list=pledge.objects.all()
         
@@ -158,6 +174,7 @@ def clickp(request, pledge_id):
         Pledge = pledge.objects.get(pk=pledge_id)
         if Pledge.status==False:
             Pledge.status=True
+            Pledge.lastpaid=datetime.now()
             money=int(totalmoney.objects.all().count())
             if money>0:
                 print(money)
@@ -254,7 +271,7 @@ def updatetexp(request):
                 tam.save()
             else:
                 messages.info(request,'not enough money with NGO')
-                redirect('/addexpend')
+                return redirect('/addexpend')
             if money>0:
                 print("222")
                 texp=expenditure.objects.get(pk=1)
@@ -288,6 +305,15 @@ def exph(request):
 
 def studentdetails(request):
     students = student.objects.order_by('-score').values()
+    inv=inventory.objects.all()
+    total=totalmoney.objects.get(id=1).Sum
+    
+    # for stu in students:
+    #     if total>0:
+    #         if stu.books:
+    #             if  
+                
+        
     return render(request,'studentlist.html',{'students':students})
 
 def deletestudent(request,student_id):
