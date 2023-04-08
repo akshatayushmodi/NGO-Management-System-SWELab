@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 # from django_postgres_extensions.models.fields import ArrayField
 
 
@@ -14,7 +15,10 @@ class inventory(models.Model):
     sclass=models.IntegerField(null=True)
     books=models.IntegerField(null=True)
     uniforms=models.IntegerField(null=True)
-    
+
+class Admin(models.Model):
+    username=models.CharField(max_length=120,null=True)
+    password=models.CharField(max_length=120,null=True)
 class estimations(models.Model):
     sclass=models.IntegerField(null=True)
     books=models.IntegerField(null=True)
@@ -40,7 +44,10 @@ class pledge(models.Model):
     money=models.PositiveBigIntegerField("paisa",null=True)
     donor=models.ForeignKey(Donor,null=True,on_delete=models.CASCADE)
     status=models.BooleanField(null=True)
+    time=models.DateTimeField(null=True)
+    lastpaid=models.DateTimeField(null=True)
     #frequency
+    frequency=models.CharField(max_length=120,null=True)
     books=models.PositiveSmallIntegerField(null=True)
     uniform=models.PositiveSmallIntegerField(null=True)#stores class
 

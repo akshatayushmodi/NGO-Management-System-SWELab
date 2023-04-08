@@ -12,7 +12,7 @@ class studentform(ModelForm):
 class pledgeform(ModelForm):
     class Meta:
         model=pledge
-        fields=('money','books','uniform')
+        fields=('money','books','uniform','frequency')
         
         #widgets
         
