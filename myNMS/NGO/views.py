@@ -122,12 +122,14 @@ def aple(request):
             form=pledgeform(request.POST)
             if form.is_valid():
                 dnr=Donor.objects.filter(user=request.user).first()
-                pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],donor=dnr,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],frequency=request.POST['frequency'],donor=dnr,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 # pledgeobj.money=form['money']
                 # pledgeobj.books=form['books']
                 # pledgeobj.uniform=form['uniform']
                 # pledgeobj.donor=request.user
                 # pledgeobj.status=False
+                pledgeobj.time=datetime.now()
+                pledgeobj.lastpaid=datetime.now()
                 pledgeobj.save()
                 messages.info(request,"Pledged!")
                 return HttpResponseRedirect('/aple?submittted=True')
@@ -139,6 +141,11 @@ def aple(request):
 
 def pledgeh(request):
     if ((request.user.is_authenticated) and (request.user.is_staff)):
+        Semiannually=pledge.objects.filter(frequency="Semiannually")
+        Annually=pledge.objects.filter(frequency="Annually")
+        for spledge in Semiannually:
+            tyet=datetime.now()-spledge.time
+            
         Pledge_list=pledge.objects.all()
         
         return render(request,'Pledgehistory.html',{'pledgelist':Pledge_list})
