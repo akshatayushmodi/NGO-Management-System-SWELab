@@ -12,26 +12,26 @@ from django.contrib.auth.models import User
 #     address=models.TextField('addressname',null=True)
 #     phone=models.BigIntegerField("mobileno",null=True)
 class inventory(models.Model):
-    sclass=models.IntegerField(null=True)
-    books=models.IntegerField(null=True)
-    uniforms=models.IntegerField(null=True)
+    sclass=models.PositiveIntegerField(null=True)
+    books=models.PositiveIntegerField(null=True)
+    uniforms=models.PositiveIntegerField(null=True)
 
 class Admin(models.Model):
     username=models.CharField(max_length=120,null=True)
     password=models.CharField(max_length=120,null=True)
 class estimations(models.Model):
-    sclass=models.IntegerField(null=True)
-    books=models.IntegerField(null=True)
-    uniforms=models.IntegerField(null=True)
+    sclass=models.PositiveIntegerField(null=True)
+    books=models.PositiveIntegerField(null=True)
+    uniforms=models.PositiveIntegerField(null=True)
 
 class totalmoney(models.Model):
-    Sum=models.IntegerField("money",null=True)
+    Sum=models.PositiveIntegerField("money",null=True)
     
 class expenditure(models.Model):
-    exp=models.IntegerField(null=True)
+    exp=models.PositiveIntegerField(null=True)
     
 class exphist(models.Model):
-    expe=models.IntegerField(null=True)
+    expe=models.PositiveIntegerField(null=True)
     rec=models.CharField(max_length=801,null=True)
 
 
@@ -44,6 +44,7 @@ class pledge(models.Model):
     money=models.PositiveBigIntegerField("paisa",null=True)
     donor=models.ForeignKey(Donor,null=True,on_delete=models.CASCADE)
     status=models.BooleanField(null=True)
+    ubstatus=models.BooleanField(null=True)
     time=models.DateTimeField(null=True)
     lastpaid=models.DateTimeField(null=True)
     #frequency
@@ -53,9 +54,9 @@ class pledge(models.Model):
 
 class student(models.Model):
     fullname=models.CharField(max_length=240,null=True)
-    sclass=models.SmallIntegerField(null=True)
-    familyincome=models.IntegerField(null=True)
-    moneyneeded=models.IntegerField(null=True)
+    sclass=models.PositiveSmallIntegerField(null=True)
+    familyincome=models.PositiveIntegerField(null=True)
+    moneyneeded=models.PositiveIntegerField(null=True)
     books=models.BooleanField(null=True,default=False)
     uniform=models.BooleanField(null=True, default=False)
     performance=models.FloatField(null=True)

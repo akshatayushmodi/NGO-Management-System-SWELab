@@ -23,10 +23,7 @@ def adminlogin(request):
                     user.is_staff=True
                     login(request,user)
                     messages.success(request,"successfully logged in")
-                    return render(request,'adminpage.html',{})
-                else:
-                    messages.success(request,"Please enter correct password or username")
-                    return redirect('/adminlogin')
+                    return render(request,'adminpage.html',{})                
             else:
                 messages.success(request,"Please enter correct password")
                 return redirect('/adminlogin')
@@ -40,6 +37,7 @@ def adminlogin(request):
 def donorlogin(request):
     donor= Donor()
     if request.method == "POST":
+        donor=Donor()
         username=str(request.POST['username'])
         password=str(request.POST['password'])
         donor.user=authenticate(username=username,password=password)
@@ -49,8 +47,10 @@ def donorlogin(request):
             return render(request,'donorpage.html',{})
         else:
             messages.success(request,"Please enter correct username or password ")
-            return redirect('donorlogin')
+            return redirect('/donorlogin')
     else:
+        if (request.user.is_authenticated):
+            return render(request,'donorpage.html',{})
         return render(request,'login_donor.html',{})
 
 
@@ -124,7 +124,7 @@ def aple(request):
             form=pledgeform(request.POST)
             if form.is_valid():
                 dnr=Donor.objects.filter(user=request.user).first()
-                pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],frequency=request.POST['frequency'],donor=dnr,status=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                pledgeobj=pledge(money=request.POST['money'],books=request.POST['books'],uniform=request.POST['uniform'],frequency=request.POST['frequency'],donor=dnr,status=False,ubstatus=False)#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 # pledgeobj.money=form['money']
                 # pledgeobj.books=form['books']
                 # pledgeobj.uniform=form['uniform']
@@ -171,6 +171,13 @@ def pledgeh(request):
 def viewdonor(request,donor_id):
     donor = Donor.objects.get(pk=donor_id)
     return render(request,'donorview.html',{'donor':donor})
+def clickub(request, pledge_id):
+     if ((request.user.is_authenticated) and (request.user.is_staff)):
+        Pledge = pledge.objects.get(pk=pledge_id)
+        if Pledge.ubstatus==False:
+            Pledge.ubstatus=True
+        Pledge.save()
+        return render(request,'adminpage.html')
 def clickp(request, pledge_id):
     if ((request.user.is_authenticated) and (request.user.is_staff)):
         Pledge = pledge.objects.get(pk=pledge_id)
@@ -304,16 +311,39 @@ def exph(request):
     
 def studentdetails(request):
     students = student.objects.order_by('-score').values()
-    inv=inventory.objects.all()
+    # inv=inventory.objects.all()
     total=totalmoney.objects.get(id=1).Sum
-    
-    # for stu in students:
-    #     if total>0:
-    #         if stu.books:
-    #             if  
+    books=[0,0,0,0,0,0,0,0]
+    uniforms=[0,0,0,0,0,0,0,0]
+    esbooks=[0,0,0,0,0,0,0,0]
+    esuniforms=[0,0,0,0,0,0,0,0]
+    for s in range(1,6,1):
+        inv=inventory.objects.filter(sclass=s).first()
+        books[s]=inv.books
+        uniforms[s]=inv.uniforms
+        es=estimations.objects.filter(sclass=s).first()
+        esbooks[s]=es.books
+        esuniforms[s]=es.uniforms
+    score=0
+    for stu in students:
+        if total>0:
+            if stu.books:
+                if  books[stu.sclass]:
+                    books[stu.sclass]=books[stu.sclass]-1
+                else:
+                    total=total-esbooks[s]
+            if stu.uniform:
+                if  uniforms[stu.sclass]:
+                    uniforms[stu.sclass]=uniforms[stu.sclass]-1
+                else:
+                    total=total-esuniforms[s]
+            total=total-stu.moneyneeded
+        else:
+            score=stu.score
+            
                 
         
-    return render(request,'studentlist.html',{'students':students})
+    return render(request,'studentlist.html',{'students':students, 'score':score})
 
 def deletestudent(request,student_id):
     if request.method=="GET":

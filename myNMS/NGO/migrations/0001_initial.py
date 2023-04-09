@@ -92,6 +92,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('money', models.PositiveBigIntegerField(null=True, verbose_name='paisa')),
                 ('status', models.BooleanField(null=True)),
+                ('ubstatus', models.BooleanField(null=True)),
                 ('time', models.DateTimeField(null=True)),
                 ('lastpaid', models.DateTimeField(null=True)),
                 ('frequency', models.CharField(max_length=120, null=True)),
