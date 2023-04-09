@@ -35,17 +35,20 @@ def adminlogin(request):
             return render(request,'adminpage.html',{})
         return render(request,'login_admin.html',{})
 def donorlogin(request):
-    donor= Donor()
+    donor=Donor()
     if request.method == "POST":
-        donor=Donor()
         username=str(request.POST['username'])
         password=str(request.POST['password'])
+        print("010")
         donor.user=authenticate(username=username,password=password)
+        print("100")
         if donor.user is not None:
+            print("777")
             login(request,donor.user)
             messages.success(request,"Welcome, you are successfully logged in!!")
             return render(request,'donorpage.html',{})
         else:
+            print("011")
             messages.success(request,"Please enter correct username or password ")
             return redirect('/donorlogin')
     else:
@@ -179,7 +182,7 @@ def clickub(request, pledge_id):
         if Pledge.ubstatus==False:
             Pledge.ubstatus=True
         Pledge.save()
-        return render(request,'adminpage.html')
+        return redirect('/pledgehist')
 def clickp(request, pledge_id):
     if ((request.user.is_authenticated) and (request.user.is_staff)):
         Pledge = pledge.objects.get(pk=pledge_id)
@@ -190,7 +193,7 @@ def clickp(request, pledge_id):
             if money>0:
                 print(money)
                 print("111")
-                funds=totalmoney.objects.get(pk=1)
+                funds=totalmoney.objects.first()
                 funds.Sum=int(Pledge.money)+int(funds.Sum)
                 funds.save()
             else:
@@ -200,7 +203,7 @@ def clickp(request, pledge_id):
         else:
             Pledge.status=False
         Pledge.save()
-        return render(request,'adminpage.html')
+        return redirect('/pledgehist')
     
     
     
@@ -247,7 +250,7 @@ def vstats(request):
                     uniforms[s]=0
             es=estimations.objects.filter(sclass=s).first()
             money=money+books[s]*int(es.books)+uniforms[s]*int(es.uniforms)
-        funds=totalmoney.objects.get(pk=1)
+        funds=totalmoney.objects.first()
         if funds.Sum >= money:
             messages.info(request,"Congrats!! we have enough funds")
         else:
@@ -276,7 +279,7 @@ def updatetexp(request):
         if request.method=='POST':
             m=int(request.POST['money'])
             r=request.POST['reason']
-            tam=totalmoney.objects.get(pk=1)
+            tam=totalmoney.objects.first()
             if tam.Sum> m:
                 tam.Sum=tam.Sum-int(m)
                 tam.save()
@@ -286,7 +289,7 @@ def updatetexp(request):
                 return redirect('/addexpend')
             if money>0:
                 print("222")
-                texp=expenditure.objects.get(pk=1)
+                texp=expenditure.objects.first()
                 texp.exp=texp.exp+int(m)
                 texp.save()
             else:
@@ -302,50 +305,22 @@ def exph(request):
     if ((request.user.is_authenticated) and (request.user.is_staff)):
         m=expenditure.objects.all().count()
         if m>0:
+            print(m)
             expend=exphist.objects.all()
-            money=expenditure.objects.get(pk=1)
+            money=expenditure.objects.first()
             return render(request,'expenditurehist.html',{'hist':expend,'total':money})
         else:
+            print(m)
             return render(request,'update_expenditure.html')
         
     
     
     
 def studentdetails(request):
-    students = student.objects.order_by('-score')
-    # inv=inventory.objects.all()
-    total=totalmoney.objects.get(id=1).Sum
-    books=[0,0,0,0,0,0,0,0]
-    uniforms=[0,0,0,0,0,0,0,0]
-    esbooks=[0,0,0,0,0,0,0,0]
-    esuniforms=[0,0,0,0,0,0,0,0]
-    for s in range(1,6,1):
-        inv=inventory.objects.filter(sclass=s).first()
-        books[s]=inv.books
-        uniforms[s]=inv.uniforms
-        es=estimations.objects.filter(sclass=s).first()
-        esbooks[s]=es.books
-        esuniforms[s]=es.uniforms
-    score=0
-    for stu in students:
-        if total>0:
-            if stu.books:
-                if  books[stu.sclass]:
-                    books[stu.sclass]=books[stu.sclass]-1
-                else:
-                    total=total-esbooks[s]
-            if stu.uniform:
-                if  uniforms[stu.sclass]:
-                    uniforms[stu.sclass]=uniforms[stu.sclass]-1
-                else:
-                    total=total-esuniforms[s]
-            total=total-stu.moneyneeded
-        else:
-            score=stu.score
-            
-                
+    students = student.objects.order_by('-score').values()
+    
         
-    return render(request,'studentlist.html',{'students':students, 'score':score})
+    return render(request,'studentlist.html',{'students':students})
 
 def deletestudent(request,student_id):
     if request.method=="GET":

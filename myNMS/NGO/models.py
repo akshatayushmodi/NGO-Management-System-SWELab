@@ -36,7 +36,7 @@ class exphist(models.Model):
 
 
 class Donor(models.Model):
-     user = models.OneToOneField(User,on_delete=models.CASCADE)
+     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
      address=models.TextField('addressname',null=True)
      phone=models.BigIntegerField("mobileno",null=True)
     
@@ -64,10 +64,10 @@ class student(models.Model):
     score=models.FloatField(null=True)
 
     def __score__(self):
-        income_coeff=0.4
+        income_coeff=0.5
         income_limit=500000.0
         gender_flag = 0
-        performance_coeff=0.3
+        performance_coeff=0.37
         gender_coefficient=1-income_coeff-performance_coeff
         if(self.gender=="Female"):
             gender_flag=1
