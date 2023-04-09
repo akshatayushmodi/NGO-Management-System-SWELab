@@ -154,6 +154,7 @@ def pledgeh(request):
             monp=(month%12)
             if (mon>6 & monp<=6) | (mon<=6 & monp>6):
                 spledge.status=False
+                spledge.save()
         for spledge in Annually:
             tyet=(datetime.now().month - spledge.time.month) + 12*(datetime.now().year-spledge.time.year)
             tpyet=(spledge.lastpaid.month - spledge.time.month) + 12*(spledge.lastpaid.year-spledge.time.year)
@@ -163,13 +164,14 @@ def pledgeh(request):
             monp=(month%24)
             if (mon>12 & monp<=12) | (mon<=12 & monp>12):
                 spledge.status=False
+                spledge.save()
             
         Pledge_list=pledge.objects.all()
         
         return render(request,'Pledgehistory.html',{'pledgelist':Pledge_list})
 
-def viewdonor(request,donor_id):
-    donor = Donor.objects.get(pk=donor_id)
+def viewdonor(request, donor_id):
+    donor = Donor.objects.get(id=donor_id)
     return render(request,'donorview.html',{'donor':donor})
 def clickub(request, pledge_id):
      if ((request.user.is_authenticated) and (request.user.is_staff)):
