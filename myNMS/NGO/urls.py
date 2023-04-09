@@ -26,6 +26,7 @@ urlpatterns = [
     path('updateinv/<inv_id>',views.inven,name='update-inv'),
     path('viewexpenditure',views.exph,name='vexp'),
     path('addexpend',views.updatetexp,name='aexpend'),
+    
 ]
     
 
