@@ -44,6 +44,7 @@ class pledge(models.Model):
     money=models.PositiveBigIntegerField("paisa",null=True)
     donor=models.ForeignKey(Donor,null=True,on_delete=models.CASCADE)
     status=models.BooleanField(null=True)
+    ubstatus=models.BooleanField(null=True)
     time=models.DateTimeField(null=True)
     lastpaid=models.DateTimeField(null=True)
     #frequency
