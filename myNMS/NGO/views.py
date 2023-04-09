@@ -15,6 +15,7 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
+
         us=Admin.objects.get(id=1)
         if username==us.username:
             if password==us.password:
@@ -23,20 +24,20 @@ def adminlogin(request):
                     user.is_staff=True
                     login(request,user)
                     messages.success(request,"successfully logged in")
-                    return render(request,'adminpage.html',{})
-                else:
-                    messages.success(request,"Please enter correct password or username")
-                    return redirect('/adminlogin')
+                    return render(request,'adminpage.html',{})                
             else:
                 messages.success(request,"Please enter correct password")
                 return redirect('/adminlogin')
         else:
             messages.success(request,"Please enter correct username")
             return redirect('/adminlogin')
+
     else:
+        if (request.user.is_authenticated and request.user.is_staff):
+            return render(request,'adminpage.html',{})
         return render(request,'login_admin.html',{})
 def donorlogin(request):
-    donor = Donor()
+    
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
@@ -44,6 +45,7 @@ def donorlogin(request):
         if donor.user is not None:
             login(request,donor.user)
             messages.success(request,"Welcome, you are successfully logged in!!")
+
             return render(request,'donorpage.html',{})
         else:
             messages.success(request,"Please enter correct username or password ")
@@ -140,6 +142,7 @@ def aple(request):
         return render(request,'addpledge.html',{'form':form})
 
 def pledgeh(request):
+
     if ((request.user.is_authenticated) and (request.user.is_staff)):
         Semiannually=pledge.objects.filter(frequency="Semiannually")
         Annually=pledge.objects.filter(frequency="Annually")
@@ -177,6 +180,7 @@ def clickub(request, pledge_id):
         Pledge.save()
         return render(request,'adminpage.html')
 def clickp(request, pledge_id):
+
     if ((request.user.is_authenticated) and (request.user.is_staff)):
         Pledge = pledge.objects.get(pk=pledge_id)
         if Pledge.status==False:
@@ -197,6 +201,7 @@ def clickp(request, pledge_id):
             Pledge.status=False
         Pledge.save()
         return render(request,'adminpage.html')
+
     
     
     
@@ -306,10 +311,6 @@ def exph(request):
     
     
     
-
-
-
-
 def studentdetails(request):
     students = student.objects.order_by('-score').values()
     # inv=inventory.objects.all()
