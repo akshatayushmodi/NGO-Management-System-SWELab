@@ -312,7 +312,7 @@ def exph(request):
     
     
 def studentdetails(request):
-    students = student.objects.order_by('-score').values()
+    students = student.objects.order_by('-score')
     # inv=inventory.objects.all()
     total=totalmoney.objects.get(id=1).Sum
     books=[0,0,0,0,0,0,0,0]
