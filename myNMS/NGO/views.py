@@ -39,6 +39,7 @@ def adminlogin(request):
 def donorlogin(request):
     
     if request.method == "POST":
+        donor=Donor()
         username=str(request.POST['username'])
         password=str(request.POST['password'])
         donor.user=authenticate(username=username,password=password)
@@ -49,8 +50,10 @@ def donorlogin(request):
             return render(request,'donorpage.html',{})
         else:
             messages.success(request,"Please enter correct username or password ")
-            return redirect('donorlogin')
+            return redirect('/donorlogin')
     else:
+        if (request.user.is_authenticated):
+            return render(request,'donorpage.html',{})
         return render(request,'login_donor.html',{})
 
 
