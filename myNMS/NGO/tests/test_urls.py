@@ -65,7 +65,7 @@ class TestUrls(TestCase):
     
     def test_update_row_url_is_resolved(self):
         url = reverse('update-row',args=[1])
-        self.assertEquals(resolve(url).func,uro)
+        self.assertEquals(resolve(url).func,changeestimate)
     
     def test_update_inv_url_is_resolved(self):
         url = reverse('update-inv',args=[1])

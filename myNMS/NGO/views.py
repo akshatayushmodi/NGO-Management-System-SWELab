@@ -15,7 +15,7 @@ def adminlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        us=Admin.objects.get(id=1)
+        us=Admin.objects.first()
         if username==us.username:
             if password==us.password:
                 user=authenticate(username=username,password=password)
@@ -39,16 +39,16 @@ def donorlogin(request):
     if request.method == "POST":
         username=str(request.POST['username'])
         password=str(request.POST['password'])
-        print("010")
+        # print("010")
         donor.user=authenticate(username=username,password=password)
-        print("100")
+        # print("100")
         if donor.user is not None:
-            print("777")
+            # print("777")
             login(request,donor.user)
             messages.success(request,"Welcome, you are successfully logged in!!")
             return render(request,'donorpage.html',{})
         else:
-            print("011")
+            # print("011")
             messages.success(request,"Please enter correct username or password ")
             return redirect('/donorlogin')
     else:
@@ -191,13 +191,13 @@ def clickp(request, pledge_id):
             Pledge.lastpaid=datetime.now()
             money=int(totalmoney.objects.all().count())
             if money>0:
-                print(money)
-                print("111")
+                # print(money)
+                # print("111")
                 funds=totalmoney.objects.first()
                 funds.Sum=int(Pledge.money)+int(funds.Sum)
                 funds.save()
             else:
-                print("222")
+                # print("222")
                 funds=totalmoney(Sum=int(Pledge.money))
                 funds.save()
         else:
@@ -284,16 +284,16 @@ def updatetexp(request):
                 tam.Sum=tam.Sum-int(m)
                 tam.save()
             else:
-                print("333")
+                # print("333")
                 messages.info(request,'not enough money with NGO')
                 return redirect('/addexpend')
             if money>0:
-                print("222")
+                # print("222")
                 texp=expenditure.objects.first()
                 texp.exp=texp.exp+int(m)
                 texp.save()
             else:
-                print("111")
+                # print("111")
                 texp=expenditure(exp=int(m))
                 texp.save()
             t=exphist(expe=int(m),rec=r)
@@ -305,12 +305,12 @@ def exph(request):
     if ((request.user.is_authenticated) and (request.user.is_staff)):
         m=expenditure.objects.all().count()
         if m>0:
-            print(m)
+            # print(m)
             expend=exphist.objects.all()
             money=expenditure.objects.first()
             return render(request,'expenditurehist.html',{'hist':expend,'total':money})
         else:
-            print(m)
+            # print(m)
             return render(request,'update_expenditure.html')
         
     

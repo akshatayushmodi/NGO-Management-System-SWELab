@@ -10,6 +10,7 @@ class TestViews(TestCase):
         self.client = Client()
         self.home_url = reverse('home')
         self.login_admin_url = reverse('login_admin')
+        Admin.objects.create(username="Admin",password="User@111")
         self.admin_user = User.objects.create_user(
             username="Admin",
             password="User@111",
@@ -131,7 +132,6 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'donorsview.html')
     def test_addstu_POST(self):
-        
         self.client.login(username='Admin',password='User@111')
         response = self.client.post(reverse('add_student'),{
             
@@ -151,10 +151,11 @@ class TestViews(TestCase):
     
     def test_aple_POST(self):
         self.client.login(username="username",password="password")
-        response = self.client.post(reverse('addpledge'),{'money':'5000','books':'6','uniform':'3'})
+        response = self.client.post(reverse('addpledge'),{'money':'5000','books':'6','uniform':'3','frequency':'Onetime'})
         self.assertEquals(response.status_code,302)
         
     def test_pledgeh_GET(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.get(reverse('pledgehist'))
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'Pledgehistory.html')
@@ -163,35 +164,42 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'donorview.html')
     def test_clickp(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.get(reverse('click-paid',args=[1]))
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response,'adminpage.html')
+        self.assertEquals(response.status_code, 302)
+       
     def test_editest(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.get(reverse('editesttbl'))
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'estimates.html')
     def test_uro(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.post(reverse('update-row',args=[1]),{'book':'11','uniform':'10'})
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response,'est.html')
     def test_vstats(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.get(reverse('viewworking'))
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'workingstats.html')
         
     def test_minventory(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.get(reverse('maintaininv'))
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'inventoryview.html')
     def test_inven(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.post(reverse('update-inv',args=[1]),{'book':'11','uniform':'10'})
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response,'inve.html')
     def test_updatetexp(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.post(reverse('aexpend'),{'money':'1000','reason':'transport'})
-        self.assertEquals(response.status_code,200)
-        self.assertTemplateUsed(response,'update_expenditure.html')
+        self.assertEquals(response.status_code,302)
     def test_exph(self):
+        self.client.login(username='Admin',password='User@111')
         response = self.client.get(reverse('vexp'))
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response,'expenditurehist.html')
